@@ -1,7 +1,7 @@
 
 import pygame
 
-class Sprites( object ):
+class Sprite( object ):
 
     def __init__( self, path: str ):
 

@@ -1,4 +1,5 @@
 
+from Sprite import Sprite
 import pygame
 
 class Game( object ):
@@ -20,10 +21,9 @@ class Game( object ):
         self._clock = None
         self._running = True
 
-<<<<<<< HEAD
         self._Bck_CHANGE_TIME = 2000
-=======
->>>>>>> 4961fea1a70159e2f3724228103f825642cc5ef0
+        self._tmp = 
+
     def _initialize( self ):
         success = True
 
@@ -36,11 +36,15 @@ class Game( object ):
             self._window = pygame.display.set_mode( size=self._SIZE, flags=self._FLAGS, depth=0, display=0, vsync=0 )
             pygame.display.set_caption( self._TITLE )
 <<<<<<< HEAD
+<<<<<<< HEAD
             self._clock = self.pygame.time.Clock()
             pygame.time.set_time(pygame.USEREVENT,self._Bck_CHANGE_TIME)
 =======
             self._clock = pygame.time.Clock()
 >>>>>>> 4961fea1a70159e2f3724228103f825642cc5ef0
+=======
+            self._clock = pygame.time.Clock()
+>>>>>>> db33589e0759fde2aadf7fda319c6558e0db2901
 
         return success
 
@@ -60,7 +64,6 @@ class Game( object ):
         self._window.fill( self._BCK_COL )
         self._window.blit(self._SURFACES[self._surf_index], (0,0)))
         self._clock.tick( self._FPS )
-        self._window.blit(,(0,0),)
         pygame.display.update()
     
     def _handle_events( self ):
@@ -68,8 +71,7 @@ class Game( object ):
         for event in pygame.event.get():
             if( event.type == pygame.QUIT ):
                 self._running = False
-            if( event.type == pygame.USEREVENT ):
-                self._surf_index +=1
+
     def execute( self ):
 
         if not self._initialize():
