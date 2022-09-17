@@ -31,6 +31,7 @@ class Game( object ):
         if( not pygame.get_init() ):
             print( "Error in initializing pygame!" )
             success = False
+
         else:
             self._window = pygame.display.set_mode( size=self._SIZE, flags=self._FLAGS, depth=0, display=0, vsync=0 )
             pygame.display.set_caption( self._TITLE )
