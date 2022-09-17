@@ -14,12 +14,11 @@ class Game( object ):
         self._NUM_IMAGES = 5
         self._SURFACES = []
         self._FPS = 60
-        
+
         self._window = None
         self._surf_index = 0
         self._clock = None
         self._running = True
-
 
     def _initialize( self ):
         success = True
