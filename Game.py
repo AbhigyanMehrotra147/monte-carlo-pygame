@@ -35,16 +35,9 @@ class Game( object ):
         else:
             self._window = pygame.display.set_mode( size=self._SIZE, flags=self._FLAGS, depth=0, display=0, vsync=0 )
             pygame.display.set_caption( self._TITLE )
-<<<<<<< HEAD
-<<<<<<< HEAD
             self._clock = self.pygame.time.Clock()
             pygame.time.set_time(pygame.USEREVENT,self._Bck_CHANGE_TIME)
-=======
             self._clock = pygame.time.Clock()
->>>>>>> 4961fea1a70159e2f3724228103f825642cc5ef0
-=======
-            self._clock = pygame.time.Clock()
->>>>>>> db33589e0759fde2aadf7fda319c6558e0db2901
 
         return success
 
