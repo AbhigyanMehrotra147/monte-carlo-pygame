@@ -1,4 +1,5 @@
 
+from Sprite import Sprite
 import pygame
 
 class Game( object ):
@@ -14,12 +15,13 @@ class Game( object ):
         self._NUM_IMAGES = 5
         self._SURFACES = []
         self._FPS = 60
-        
+
         self._window = None
         self._surf_index = 0
         self._clock = None
         self._running = True
 
+        self._tmp = 
 
     def _initialize( self ):
         success = True
@@ -32,13 +34,12 @@ class Game( object ):
         else:
             self._window = pygame.display.set_mode( size=self._SIZE, flags=self._FLAGS, depth=0, display=0, vsync=0 )
             pygame.display.set_caption( self._TITLE )
-            self._clock = self.pygame.time.Clock
+            self._clock = pygame.time.Clock()
 
         return success
 
     def load_media( self ):
         success = True
-
         extension = ".jpg"
         for i in range(self._NUM_IMAGES):
             self._SURFACES[i] = pygame.image.load(self._path + str(i) + extension).convert_alpha()
@@ -51,6 +52,7 @@ class Game( object ):
     def _render( self ):
 
         self._window.fill( self._BCK_COL )
+        self._window.blit(self._SURFACES[self._surf_index], (0,0)))
         self._clock.tick( self._FPS )
         pygame.display.update()
     
