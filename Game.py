@@ -1,5 +1,6 @@
 
 import pygame
+from Sprite import Sprite
 
 class Game( object ):
 
@@ -20,6 +21,10 @@ class Game( object ):
         self._clock = None
         self._running = True
 
+        self._Bck_CHANGE_TIME = 2000
+
+        self.tmp = Sprite( './trainer_sheet.png' )
+
     def _initialize( self ):
         success = True
 
@@ -31,7 +36,11 @@ class Game( object ):
         else:
             self._window = pygame.display.set_mode( size=self._SIZE, flags=self._FLAGS, depth=0, display=0, vsync=0 )
             pygame.display.set_caption( self._TITLE )
+
             self._clock = pygame.time.Clock()
+
+            self._clock = self.pygame.time.Clock()
+            pygame.time.set_time( pygame.USEREVENT, self._Bck_CHANGE_TIME )
 
         return success
 
@@ -40,9 +49,9 @@ class Game( object ):
         extension = ".jpg"
         for i in range(self._NUM_IMAGES):
             self._SURFACES[i] = pygame.image.load(self._path + str(i) + extension).convert_alpha()
-        
-        return success 
-    
+
+        return success
+
     def _update( self ):
         pass
 
@@ -51,13 +60,16 @@ class Game( object ):
         self._window.fill( self._BCK_COL )
         self._window.blit(self._SURFACES[self._surf_index], (0,0)))
         self._clock.tick( self._FPS )
+        self._window.blit(,(0,0),)
         pygame.display.update()
-    
+
     def _handle_events( self ):
         # The event loop
         for event in pygame.event.get():
             if( event.type == pygame.QUIT ):
                 self._running = False
+            if( event.type == pygame.USEREVENT ):
+                self._surf_index +=1
 
     def execute( self ):
 
@@ -69,7 +81,7 @@ class Game( object ):
                 self._handle_events()
                 self._update()
                 self._render()
-        
+
         self._clean()
         print( 'Exited game instance!' )
 
