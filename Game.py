@@ -20,7 +20,7 @@ class Game( object ):
         self._clock = None
         self._running = True
 
-
+        self._Bck_CHANGE_TIME = 2000
     def _initialize( self ):
         success = True
 
@@ -32,7 +32,8 @@ class Game( object ):
         else:
             self._window = pygame.display.set_mode( size=self._SIZE, flags=self._FLAGS, depth=0, display=0, vsync=0 )
             pygame.display.set_caption( self._TITLE )
-            self._clock = self.pygame.time.Clock
+            self._clock = self.pygame.time.Clock()
+            pygame.time.set_time(pygame.USEREVENT,self._Bck_CHANGE_TIME)
 
         return success
 
@@ -52,6 +53,7 @@ class Game( object ):
 
         self._window.fill( self._BCK_COL )
         self._clock.tick( self._FPS )
+        self._window.blit(,(0,0),)
         pygame.display.update()
     
     def _handle_events( self ):
@@ -59,7 +61,8 @@ class Game( object ):
         for event in pygame.event.get():
             if( event.type == pygame.QUIT ):
                 self._running = False
-
+            if( event.type == pygame.USEREVENT ):
+                self._surf_index +=1
     def execute( self ):
 
         if not self._initialize():
