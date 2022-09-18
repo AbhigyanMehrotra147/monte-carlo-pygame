@@ -1,5 +1,4 @@
 
-from Sprite import Sprite
 import pygame
 
 class Game( object ):
@@ -11,10 +10,10 @@ class Game( object ):
         self._FLAGS = pygame.RESIZABLE
 
         self._SIZE = ( self._WIDTH, self._HEIGHT )
-        self._BCK_COL = ( 255, 0, 0 )
+        self._BCK_COL = [ 255, 2, 0 ]
         self._NUM_IMAGES = 5
         self._SURFACES = []
-        self._FPS = 60
+        self._FPS = 10
 
         self._window = None
         self._surf_index = 0
@@ -22,22 +21,27 @@ class Game( object ):
         self._running = True
 
         self._Bck_CHANGE_TIME = 2000
-        self._tmp = 
+        self._ash = None
+        self._ash_index = None
+        self._ash_num = None
 
     def _initialize( self ):
         success = True
 
         # initialising pygame subsystems
         pygame.init()
+        from Sprite import Sprite
         if( not pygame.get_init() ):
             print( "Error in initializing pygame!" )
             success = False
         else:
             self._window = pygame.display.set_mode( size=self._SIZE, flags=self._FLAGS, depth=0, display=0, vsync=0 )
             pygame.display.set_caption( self._TITLE )
-            self._clock = self.pygame.time.Clock()
-            pygame.time.set_time(pygame.USEREVENT,self._Bck_CHANGE_TIME)
             self._clock = pygame.time.Clock()
+
+            self._ash_index = 0
+            self._ash_num = 5
+            self._ash = Sprite( "./trainer_sheet.png", "./trainer_sheet.json" ).get_frames( self._ash_num )
 
         return success
 
@@ -55,8 +59,14 @@ class Game( object ):
     def _render( self ):
 
         self._window.fill( self._BCK_COL )
-        self._window.blit(self._SURFACES[self._surf_index], (0,0)))
+        self._BCK_COL[ 0 ] = ( self._BCK_COL[ 0 ] - 10 ) % 255
+        self._BCK_COL[ 2 ] = (self._BCK_COL[0] + self._BCK_COL[2]) %255 
+        # self._window.blit(self._SURFACES[self._surf_index], (0,0))
+        self._window.blit( self._ash[ self._ash_index % self._ash_num ], ( self._HEIGHT / 2 - 10, self._WIDTH/2 - 10 ) )
         self._clock.tick( self._FPS )
+
+        self._ash_index += 1;
+
         pygame.display.update()
     
     def _handle_events( self ):
