@@ -2,7 +2,6 @@
 import pygame
 import json
 
-
 class Sprite( object ):
 
     def __init__( self, image_path: str, json_path: str ):
