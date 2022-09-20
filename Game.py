@@ -21,6 +21,7 @@ class Game( object ):
         self._clock = None
         self._running = True
 
+        self._Bck_CHANGE_TIME = 2000
         self._tmp = 
 
     def _initialize( self ):
@@ -31,9 +32,12 @@ class Game( object ):
         if( not pygame.get_init() ):
             print( "Error in initializing pygame!" )
             success = False
+
         else:
             self._window = pygame.display.set_mode( size=self._SIZE, flags=self._FLAGS, depth=0, display=0, vsync=0 )
             pygame.display.set_caption( self._TITLE )
+            self._clock = self.pygame.time.Clock()
+            pygame.time.set_time(pygame.USEREVENT,self._Bck_CHANGE_TIME)
             self._clock = pygame.time.Clock()
 
         return success
