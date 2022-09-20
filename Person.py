@@ -3,14 +3,14 @@ import pygame
 from Sprite import Sprite
 
 class Person( object ):
-    def __init__( self, cur_x : int, cur_y : int,  image_path : str, json_path : str, NUM_FRAMES : int, sprite_index):
+    def __init__( self, cur_x : int, cur_y : int,  image_path : str, json_path : str, NUM_FRAMES : int, sprite_index, x_name : str, y_name: str, width_name : str, height_name : str):
         self._NUM_FRAMES = NUM_FRAMES
 
         self._cur_x = cur_x
         self._cur_y = cur_y
         self._scale = 1
 
-        self._sprites = Sprite( image_path= image_path, json_path= json_path).get_frames( num_frame= NUM_FRAMES )
+        self._sprites = Sprite( image_path= image_path, json_path= json_path,  x_name = x_name, y_name = y_name, width_name = width_name, height_name = height_name).get_frames( num_frame= NUM_FRAMES )
         self._sprite_index = sprite_index
 
     def move( self, screen : pygame.Surface, dx : float , dy : float):
@@ -29,4 +29,3 @@ class Person( object ):
             sprite_rect = sprite_surf.get_rect()
             sprite_rect.center = ( self._cur_x, self._cur_y )
             screen.blit( sprite_surf, sprite_rect )
-    

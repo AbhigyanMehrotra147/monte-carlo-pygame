@@ -7,8 +7,8 @@ class Game( object ):
 
     def __init__( self ):
         self._TITLE = " Monte Carlo Beer Simulation "
-        self._WIDTH = 640
-        self._HEIGHT = 480
+        self._WIDTH = 1200
+        self._HEIGHT = 760
         self._FLAGS = pygame.RESIZABLE
 
         self._SIZE = ( self._WIDTH, self._HEIGHT )
@@ -48,8 +48,7 @@ class Game( object ):
             self._background = Background( screen= self._window )
             print(type(self._background))
 
-            self._ash = Person( cur_x= 0, cur_y= self._HEIGHT/2, image_path = "./trainer_sheet.png",  json_path= "./trainer_sheet.json", NUM_FRAMES=5, sprite_index=0 )
-
+            self._ash = Person( cur_x= 0, cur_y= self._HEIGHT/2, image_path = "./boy.png",  json_path= "./boy.json", NUM_FRAMES=5, sprite_index=0, x_name="x", y_name = "y", width_name = "width", height_name = "height" )
             
             self._prev_time = time()
 
@@ -70,14 +69,15 @@ class Game( object ):
         # self._BCK_COL[ 0 ] = ( self._BCK_COL[ 0 ] - 5 ) % 255
         # self._BCK_COL[ 2 ] = (self._BCK_COL[0] + self._BCK_COL[2]) %255 
 
-        self._background.render( screen = self._window )
+        self._background.render_background( screen = self._window )
         self._ash.render( self._window )
+        self._background.render_hue( self._window )
         
         self._clock.tick_busy_loop( self._FPS )
 
         cur_fps = self._clock.get_fps()
-        fps_text = pygame.font.SysFont( "impact", 50 ).render( str(cur_fps), 1, (0,0,0))
-        self._window.blit( fps_text, ( self._WIDTH / 2, 100) )
+        # fps_text = pygame.font.SysFont( "impact", 50 ).render( str(cur_fps), 1, (0,0,0))
+        # self._window.blit( fps_text, ( self._WIDTH / 2, 100) )
 
         pygame.display.update()
 
@@ -86,8 +86,7 @@ class Game( object ):
         for event in pygame.event.get():
             if( event.type == pygame.QUIT ):
                 self._running = False
-    def remove_person():
-        pass
+
     def execute( self ):
 
         if not self._initialize():
