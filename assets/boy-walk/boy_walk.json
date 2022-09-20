@@ -1,0 +1,76 @@
+{"frames": [
+
+{
+	"filename": " 2022-09-20 at 11.00.49 AM.png",
+	"frame": {"x":1,"y":1,"w":200,"h":248},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":248},
+	"sourceSize": {"w":200,"h":248}
+},
+{
+	"filename": " 2022-09-20 at 11.01.03 AM.png",
+	"frame": {"x":203,"y":1,"w":200,"h":248},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":248},
+	"sourceSize": {"w":200,"h":248}
+},
+{
+	"filename": " 2022-09-20 at 11.01.13 AM.png",
+	"frame": {"x":405,"y":1,"w":200,"h":248},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":248},
+	"sourceSize": {"w":200,"h":248}
+},
+{
+	"filename": " 2022-09-20 at 11.02.01 AM.png",
+	"frame": {"x":607,"y":1,"w":200,"h":248},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":248},
+	"sourceSize": {"w":200,"h":248}
+},
+{
+	"filename": " 2022-09-20 at 11.02.22 AM.png",
+	"frame": {"x":809,"y":1,"w":200,"h":248},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":248},
+	"sourceSize": {"w":200,"h":248}
+},
+{
+	"filename": " 2022-09-20 at 11.02.34 AM.png",
+	"frame": {"x":1011,"y":1,"w":200,"h":248},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":248},
+	"sourceSize": {"w":200,"h":248}
+},
+{
+	"filename": " 2022-09-20 at 11.02.44 AM.png",
+	"frame": {"x":1213,"y":1,"w":200,"h":248},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":248},
+	"sourceSize": {"w":200,"h":248}
+},
+{
+	"filename": " 2022-09-20 at 11.02.54 AM.png",
+	"frame": {"x":1415,"y":1,"w":200,"h":248},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":248},
+	"sourceSize": {"w":200,"h":248}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "boy_walk.png",
+	"format": "RGBA8888",
+	"size": {"w":1616,"h":250},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:28f10734296ee509acf0bb2766017a15:47c1e692b0e525ac753832d1c68c958b:955cab442b7c5e7fe164535ed08abd56$"
+}
+}

@@ -1,0 +1,66 @@
+{"frames": [
+
+{
+	"filename": "2022-09-20 at 3.25.56 PM.png",
+	"frame": {"x":1,"y":1,"w":310,"h":474},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":310,"h":474},
+	"sourceSize": {"w":310,"h":474},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "2022-09-20 at 3.27.11 PM.png",
+	"frame": {"x":313,"y":1,"w":310,"h":474},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":310,"h":474},
+	"sourceSize": {"w":310,"h":474},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "2022-09-20 at 3.27.27 PM.png",
+	"frame": {"x":625,"y":1,"w":310,"h":474},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":310,"h":474},
+	"sourceSize": {"w":310,"h":474},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "2022-09-20 at 3.27.36 PM.png",
+	"frame": {"x":937,"y":1,"w":310,"h":474},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":310,"h":474},
+	"sourceSize": {"w":310,"h":474},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "2022-09-20 at 3.27.46 PM.png",
+	"frame": {"x":1249,"y":1,"w":310,"h":474},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":310,"h":474},
+	"sourceSize": {"w":310,"h":474},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "2022-09-20 at 3.28.04 PM.png",
+	"frame": {"x":1561,"y":1,"w":310,"h":474},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":310,"h":474},
+	"sourceSize": {"w":310,"h":474},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "todler_female_walk.png",
+	"format": "RGBA8888",
+	"size": {"w":1872,"h":476},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:80e9d3837bd6089aad49c84b89c7653a:ccd019a1e63c6d7ee4d92be23122751a:f9da1d45080e53392cda155dca45b0a7$"
+}
+}
