@@ -1,6 +1,6 @@
 
 import pygame
-import time
+from time import time
 import math
 
 class Game( object ):
@@ -15,13 +15,14 @@ class Game( object ):
         self._BCK_COL = [ 255, 2, 0 ]
         self._NUM_IMAGES = 5
         self._SURFACES = []
-        self._FPS = 5
+        self._FPS = 15
 
         self._running = True
         self._window = None
         self._clock = None
 
         self._ash = None
+        self._background = None
 
         self._delta_T = 0
         self._prev_time = 0
@@ -38,21 +39,27 @@ class Game( object ):
 
         else:
             from Person import Person
+            from Background import Background
 
             self._window = pygame.display.set_mode( size=self._SIZE, flags=self._FLAGS, depth=0, display=0, vsync=0 )
             pygame.display.set_caption( self._TITLE )
             self._clock = pygame.time.Clock()
 
+            self._background = Background( screen= self._window )
+            print(type(self._background))
+
             self._ash = Person( cur_x= 0, cur_y= self._HEIGHT/2, image_path = "./trainer_sheet.png",  json_path= "./trainer_sheet.json", NUM_FRAMES=5, sprite_index=0 )
 
-            self._prev_time = time.time()
+            
+            self._prev_time = time()
 
         return success
 
     def _update( self ):
 
-        self._ash.move( dx= float( 50 * self._delta_T ), dy= 50 * math.sin( self._ash.cur_x ) )
-        self._ash._sprite_index += 1
+        self._background.update()
+        self._ash.move( screen = self._window, dx= float( 50 * self._delta_T ), dy= 0) 
+
 
     def _render( self ):
  
@@ -60,9 +67,10 @@ class Game( object ):
         self._window.fill( self._BCK_COL )
 
         # changing the background colour
-        self._BCK_COL[ 0 ] = ( self._BCK_COL[ 0 ] - 5 ) % 255
-        self._BCK_COL[ 2 ] = (self._BCK_COL[0] + self._BCK_COL[2]) %255 
+        # self._BCK_COL[ 0 ] = ( self._BCK_COL[ 0 ] - 5 ) % 255
+        # self._BCK_COL[ 2 ] = (self._BCK_COL[0] + self._BCK_COL[2]) %255 
 
+        self._background.render( screen = self._window )
         self._ash.render( self._window )
         
         self._clock.tick_busy_loop( self._FPS )
@@ -78,7 +86,8 @@ class Game( object ):
         for event in pygame.event.get():
             if( event.type == pygame.QUIT ):
                 self._running = False
-
+    def remove_person():
+        pass
     def execute( self ):
 
         if not self._initialize():
@@ -87,7 +96,7 @@ class Game( object ):
         else:
             while( self._running ):
 
-                cur_time = time.time()
+                cur_time = time()
                 self._delta_T = cur_time - self._prev_time
                 self._prev_time = cur_time
                 
@@ -97,6 +106,7 @@ class Game( object ):
 
         self._clean()
         print( 'Exited game instance!' )
+
 
     def _clean( self ):
         # needs to delete / free elements
