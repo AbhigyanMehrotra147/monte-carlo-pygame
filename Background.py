@@ -6,7 +6,7 @@ class Background( object ):
     def __init__( self, screen : pygame.Surface ):
 
         self._GRAD = 30
-        self._ALPHA = 0.3
+        self._ALPHA = 1
         self._DAWN = [ 219, 132, 120, self._ALPHA ]
         self._NIGHT = [ 8, 30, 50, self._ALPHA]
 

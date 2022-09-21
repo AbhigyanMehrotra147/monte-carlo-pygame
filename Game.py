@@ -48,7 +48,7 @@ class Game( object ):
             self._background = Background( screen= self._window )
             print(type(self._background))
 
-            self._ash = Person( cur_x= 0, cur_y= self._HEIGHT/2, image_path = "./boy.png",  json_path= "./boy.json", NUM_FRAMES=5, sprite_index=0, x_name="x", y_name = "y", width_name = "width", height_name = "height" )
+            self._ash = Person( cur_x = self._WIDTH/(3/2), cur_y= self._HEIGHT/(3/2) , image_path = "./boy.png",  json_path= "./boy.json", NUM_FRAMES=5, sprite_index=0, x_name="x", y_name = "y", width_name = "width", height_name = "height" )
             
             self._prev_time = time()
 
@@ -57,7 +57,7 @@ class Game( object ):
     def _update( self ):
 
         self._background.update()
-        self._ash.move( screen = self._window, dx= float( 50 * self._delta_T ), dy= 0) 
+        self._ash.move( screen = self._window, dx= -float( 10 * self._delta_T ), dy= -1) 
 
 
     def _render( self ):
