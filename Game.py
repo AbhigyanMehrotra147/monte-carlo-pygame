@@ -35,6 +35,7 @@ class Game( object ):
         if( not pygame.get_init() ):
             print( "Error in initializing pygame!" )
             success = False
+
         else:
             from Person import Person
 
