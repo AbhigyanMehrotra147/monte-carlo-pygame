@@ -41,5 +41,5 @@ class Sprite( object ):
                 self._image_arr.append( self._get_sprite( data_dict[ self._x_name ], data_dict[ self._y_name ], data_dict[ self._width_name ], data_dict[ self._height_name ] ) )
 
             frame_number += 1
-        
+
         return self._image_arr
