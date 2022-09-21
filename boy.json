@@ -1,0 +1,60 @@
+{
+    "frames": {
+        "sprite1": {
+            "x" : 20,
+            "y" : 10,
+            "width": 70,
+            "height": 120,
+            "background": "url(boy_walking - Edited.png) -20px -10px"
+        },
+        "sprite2": {
+            "x": 140,
+            "y": 10,
+            "width": 70,
+            "height": 120,
+            "background": "url(boy_walking - Edited.png) -140px -10px"
+        },
+        "sprite3": {
+            "x": 240,
+            "y": 10, 
+            "width": 70,
+            "height": 120,
+            "background": "url(boy_walking - Edited.png) -240px -10px" 
+        },
+        "sprite4": {
+            "x": 350,
+            "y": 10,
+            "width": 70,
+            "height": 120,
+            "background": "url(boy_walking - Edited.png) -350px -10px"
+        },
+        "sprite5": {
+            "x": 450,
+            "y": 10,
+            "width": 70,
+            "height": 120,
+            "background": "url(boy_walking - Edited.png) -450px -10" 
+        },
+        "sprite6": {
+            "x": 570,
+            "y": 10,
+            "width": 70,
+            "height": 120,
+            "background": "url(boy_walking - Edited.png) -570px -10"
+        },
+        "sprite7": {
+            "x": 670,
+            "y": 10,
+            "width": 70,
+            "height": 120,
+            "background": "url(boy_walking - Edited.png) -670px -10"
+        },
+        "sprite8": {
+            "x": 780,
+            "y": 10,
+            "width": 70,
+            "height": 120,
+            "background": "url(boy_walking - Edited.png) -780px -10"
+        }
+    }
+}
