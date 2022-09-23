@@ -48,7 +48,7 @@ class Game( object ):
 
             self._background = Background( screen = self._window )
 
-            self._LawLarge = LawLarge(pos_x = self._WIDTH - 1100, pos_y = 10, width = 500, height = 200, color_rect = ( 100,100,140 ), \
+            self._LawLarge = LawLarge(pos_x = self._WIDTH - 1200, pos_y = 100, width = 500, height = 200, color_rect = ( 100,100,140 ), \
                 color_line = (200,200,200), monte_file_path = "temp.txt", formula_image_path = "formula.png" )
             self._LawLarge.initialize()
             # self._ash = Person( cur_x = self._WIDTH/(3/2), cur_y= self._HEIGHT/(3/2) , image_path = "./boy.png",  json_path= "./boy.json", NUM_FRAMES=5, sprite_index=0, x_name="x", y_name = "y", width_name = "width", height_name = "height" )
