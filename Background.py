@@ -23,7 +23,7 @@ class Background( object ):
 
     def update( self ):
         self._cur_focus = ( self._cur_focus + 1 ) % self._len_colors
-        print( "The current focus is: ", self._cur_focus )
+        # print( "The current focus is: ", self._cur_focus )
 
     def _return_alpha( self, cur_index: int, cur_focus: int ):
         # using the function 1/2 next next

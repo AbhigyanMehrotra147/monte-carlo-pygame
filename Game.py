@@ -40,13 +40,16 @@ class Game( object ):
         else:
             from Person import Person
             from Background import Background
+            from LawLarge import LawLarge
 
-            self._window = pygame.display.set_mode( size= self._SIZE, flags= self._FLAGS, depth= 0, display= 0, vsync= 0 )
+            self._window = pygame.display.set_mode( size= self._SIZE, flags= self._FLAGS, depth= 1, display= 0, vsync= 0 )
             pygame.display.set_caption( self._TITLE )
             self._clock = pygame.time.Clock()
 
             self._background = Background( screen= self._window )
 
+            self._LawLarge = LawLarge(pos_x = self._WIDTH - 400, pos_y = 10, width = 250, height = 150,color = (60,60,60),file_path = "temp.txt", )
+            self._LawLarge.initialize()
             self._ash = Person( cur_x = self._WIDTH/(3/2), cur_y= self._HEIGHT/(3/2) , image_path = "./boy.png",  json_path= "./boy.json", NUM_FRAMES=5, sprite_index=0, x_name="x", y_name = "y", width_name = "width", height_name = "height" )
 
             self._prev_time = time()
@@ -63,6 +66,8 @@ class Game( object ):
         self._background.render_background( screen = self._window )
         self._ash.render( self._window )
         self._background.render_hue( self._window )
+        self._LawLarge.render(screen = self._window )
+
 
         # fps_text = pygame.font.SysFont( "impact", 50 ).render( str(cur_fps), 1, (0,0,0))
         # self._window.blit( fps_text, ( self._WIDTH / 2, 100) )
