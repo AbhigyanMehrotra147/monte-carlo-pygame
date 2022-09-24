@@ -1,3 +1,4 @@
+
 import sys
 import pygame
 file = open( "temp.txt" , 'r')
