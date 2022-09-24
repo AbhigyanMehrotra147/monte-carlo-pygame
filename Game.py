@@ -72,7 +72,8 @@ class Game( object ):
 
         # fps_text = pygame.font.SysFont( "impact", 50 ).render( str(cur_fps), 1, (0,0,0))
         # self._window.blit( fps_text, ( self._WIDTH / 2, 100) )
-
+        
+        self._window.blit(pygame.transform.scale(surface = self._window, size = self._SIZE), dest = (0,0))
         pygame.display.update()
 
         self._clock.tick_busy_loop( self._FPS )
@@ -83,6 +84,10 @@ class Game( object ):
         for event in pygame.event.get():
             if( event.type == pygame.QUIT ):
                 self._running = False
+            elif event.type == pygame.VIDEORESIZE:
+                # in the running frame it is updated later on:
+                print( 'Updated' )
+                self._SIZE = event.dict["size"]
 
     def execute( self ):
 

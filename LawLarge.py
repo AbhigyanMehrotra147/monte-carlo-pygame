@@ -33,7 +33,7 @@ class LawLarge( object ):
 
         self._read_file( file_mode = 'r')
         self._create_rect()
-        self._create_line( surf_size =  ( self._SIZE[0]*0.9,self._SIZE[1]*0.3 ), smiley_size = (40,40) )
+        self._create_line( surf_size =  ( self._SIZE[0]*0.9,self._SIZE[1]*0.3 ), smiley_size = (30,30) )
         self._create_formula()
 
 
@@ -44,6 +44,7 @@ class LawLarge( object ):
         for line in file:
             temp_str += line
         self._list_bool = list(temp_str.split( " " ))
+        self._list_bool = [int(i) for i in self._list_bool]
 
     # Creates the number line
     def _create_line( self, surf_size, ):
@@ -109,7 +110,7 @@ class LawLarge( object ):
         for i in range(int(line_start_pos[0] + gap), int(line_end_pos[0] - gap), gap):
             smiley = self._select_smilie(j)
             self._line_surface.blit( source = smiley, dest = (x_coord, y_coord) )
-            x_coord += i
+            x_coord += gap
             j+=1
 
     def _render_formula( self, screen: pygame.Surface, relative_formula_pos: tuple ):
@@ -142,7 +143,8 @@ class LawLarge( object ):
         
 
     def _update_index( self ):
-        if (self._list_index < (len(self._list_bool) - self._number_of_dots)):
+
+        if (self._list_index < (len(self._list_bool) - self._number_of_dots*2 - 1)):
             self._list_index += 1
         else:
             self._list_index = 0
