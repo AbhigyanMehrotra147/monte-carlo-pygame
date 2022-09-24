@@ -1,5 +1,8 @@
+
 from asyncore import read
 import pygame
+
+from create_latex_png import create_latex_png
 
 class LawLarge( object ):
 
@@ -27,7 +30,10 @@ class LawLarge( object ):
         self._happy_smiley = pygame.image.load( smiley_address + "happy_smiley.png" )
         self._sad_smiley = pygame.image.load( smiley_address + "sad_smiley.png" )
         self._smiley_address = smiley_address
-    
+
+        self._temp_file_name = 'z_i.png'
+        self._cur_zi = r'$$Z_i = 0$$'
+
     def initialize( self ):
         self._border_radius = int((self._SIZE[0] + self._SIZE[1])/5)
 
@@ -35,8 +41,6 @@ class LawLarge( object ):
         self._create_rect()
         self._create_line( surf_size =  ( self._SIZE[0]*0.9,self._SIZE[1]*0.3 ), smiley_size = (30,30) )
         self._create_formula()
-
-
 
     def _read_file( self, file_mode: str ):
         file = open(self._monte_file_path,file_mode)
@@ -53,22 +57,21 @@ class LawLarge( object ):
         self._list_bool = [int(i) for i in self._list_bool]
 
     def _select_smilie( self,index: int):
- 
+
         if self._list_bool[index] == 0:
             return self._sad_smiley
         else:
             return self._happy_smiley
 
-
     # Creates the surface and rectangle on whch the number line will be displayed along with 
-    
+
     def _scale_smiley( self, smiley_size: tuple):
         self._happy_smiley = pygame.transform.scale( surface = self._happy_smiley, size = smiley_size )
         self._sad_smiley = pygame.transform.scale( surface = self._sad_smiley, size = smiley_size)
 
     def _create_line( self, surf_size: tuple, smiley_size: tuple ):
         self._line_surface = pygame.Surface( size = surf_size )
-        self._line_surface.set_colorkey( self._color_rect ) 
+        self._line_surface.set_colorkey( self._color_rect )
         self._line_rect = self._line_surface.get_rect()
         self._scale_smiley( smiley_size = smiley_size )
 
@@ -77,7 +80,6 @@ class LawLarge( object ):
         self._surface = pygame.Surface( size = self._SIZE )
         self._rect = pygame.Rect( self._POS, self._SIZE )
         pass
-
 
     def _create_formula( self ):
         self._formula_surface = pygame.image.load( self._formula_image_path )
@@ -149,6 +151,8 @@ class LawLarge( object ):
         else:
             self._list_index = 0
 
+        print( create_latex_png( self._cur_zi, self._temp_file_name ) )
+
 
     def render( self, screen: pygame.Surface ):
         self._render_formula( screen = screen, relative_formula_pos = (0.53,0.05))
@@ -158,3 +162,6 @@ class LawLarge( object ):
             (1,0.5), rel_start_pos_v = (0.5,0), rel_end_pos_v = (0.5,0.5), line_width=5, transparency = 60 )
         self._update_index()
 
+    def _render_zi( self, screen: pygame.Surface ):
+        # fetches the tmp image and blits it onto the screen
+        self._surface.blit( pygame.image.load( self._temp_file_name ).convert(), () )

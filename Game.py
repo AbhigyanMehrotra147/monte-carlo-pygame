@@ -7,7 +7,7 @@ class Game( object ):
 
     def __init__( self ):
         self._TITLE = " Monte Carlo Beer Simulation "
-        self._WIDTH = 1200
+        self._WIDTH = 1100
         self._HEIGHT = 760
         self._FLAGS = pygame.RESIZABLE
 
@@ -19,6 +19,10 @@ class Game( object ):
 
         self._running = True
         self._window = None
+
+        # the screen for temp blitting and scaling
+        self._screen = pygame.Surface( self._SIZE )
+
         self._clock = None
 
         self._ash = None
@@ -46,7 +50,7 @@ class Game( object ):
             pygame.display.set_caption( self._TITLE )
             self._clock = pygame.time.Clock()
 
-            self._background = Background( screen = self._window )
+            self._background = Background( screen = self._screen )
 
             self._LawLarge = LawLarge(pos_x = self._WIDTH - 1000, pos_y = self._HEIGHT - 690, width = 500, height = 200, color_rect = ( 100,100,140 ), \
                 color_line = (255,255,255,255), monte_file_path = "temp.txt", formula_image_path = "formula.png", number_of_dots = 15, smiley_address = "./assets/smiley/" )
@@ -64,16 +68,15 @@ class Game( object ):
 
     def _render( self ):
 
-        self._background.render_background( screen = self._window )
+        self._background.render_background( screen = self._screen )
         # self._ash.render( self._window )
-        self._background.render_hue( self._window )
-        self._LawLarge.render(screen = self._window )
-
+        self._background.render_hue( self._screen )
+        self._LawLarge.render( screen = self._screen )
 
         # fps_text = pygame.font.SysFont( "impact", 50 ).render( str(cur_fps), 1, (0,0,0))
         # self._window.blit( fps_text, ( self._WIDTH / 2, 100) )
-        
-        self._window.blit(pygame.transform.scale(surface = self._window, size = self._SIZE), dest = (0,0))
+        self._window.fill( ( 0, 0, 0, 1 ) )
+        self._window.blit( pygame.transform.scale( self._screen, self._SIZE ), dest = (0,0) )
         pygame.display.update()
 
         self._clock.tick_busy_loop( self._FPS )
@@ -96,7 +99,7 @@ class Game( object ):
             self._running = False
         else:
             while( self._running ):
-                    
+
                 cur_time = time()
                 self._delta_T = cur_time - self._prev_time
                 self._prev_time = cur_time
