@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 from tkinter import *
 from tkinter import ttk
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+=======
+
+import sys
+import pygame
+file = open( "temp.txt" , 'r')
+>>>>>>> 1101dcc86c98b62be5db327b60df8a2966b03382
 
 # Use TkAgg in the backend of tkinter application
 matplotlib.use('TkAgg')
@@ -34,6 +41,7 @@ var = StringVar()
 entry = Entry(frame, width=70, textvariable=var)
 entry.pack()
 
+<<<<<<< HEAD
 # Add a label widget in the frame
 label = Label(frame)
 label.pack()
@@ -51,3 +59,24 @@ wx.get_yaxis().set_visible(False)
 
 win.bind('<Return>', graph)
 win.mainloop()
+=======
+font = pygame.font.Font("freesansbold.ttf", 34)
+text = font.render("hello world",True, (10,10,23),(255,255,255))
+# print(pygame.font.get_fonts())
+
+text_rect = text.get_rect()
+text_rect.center = (200,200)
+
+while True:
+
+    screen.fill((255,255,255))
+    screen.blit(source=text,dest=text_rect)
+
+    for event in pygame.event.get():
+
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+    pygame.display.update
+
+>>>>>>> 1101dcc86c98b62be5db327b60df8a2966b03382
