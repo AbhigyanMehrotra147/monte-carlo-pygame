@@ -44,15 +44,12 @@ class LawLarge( object ):
         for line in file:
             temp_str += line
         self._list_bool = list(temp_str.split( " " ))
-<<<<<<< HEAD
 
     # Creates the number line
     def _create_line( self, surf_size, ):
         self._line_surface = pygame.Surface( size = surf_size )
         self._line_rect = self._line_surface.get_rect()
-=======
         self._list_bool = [int(i) for i in self._list_bool]
->>>>>>> 1101dcc86c98b62be5db327b60df8a2966b03382
 
     def _select_smilie( self,index: int):
  
@@ -145,8 +142,8 @@ class LawLarge( object ):
         
 
     def _update_index( self ):
-        if (self._list_index < 12):
-            self._list_index += self._number_of_dots
+        if (self._list_index < (len(self._list_bool) - self._number_of_dots)):
+            self._list_index += 1
         else:
             self._list_index = 0
 
