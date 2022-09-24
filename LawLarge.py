@@ -38,7 +38,7 @@ class LawLarge( object ):
         for line in file:
             temp_str += line
         self._list_bool = list(temp_str.split( " " ))
-    
+
     # Creates the number line
     def _create_line( self, surf_size, ):
         self._line_surface = pygame.Surface( size = surf_size )
