@@ -137,8 +137,8 @@ class LawLarge( object ):
         
 
     def _update_index( self ):
-        if (self._list_index < 12):
-            self._list_index += self._number_of_dots
+        if (self._list_index < (len(self._list_bool) - self._number_of_dots)):
+            self._list_index += 1
         else:
             self._list_index = 0
 
