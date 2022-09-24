@@ -1,15 +1,14 @@
-<<<<<<< HEAD
-from tkinter import *
-from tkinter import ttk
-import matplotlib
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-=======
+# <<<<<<< HEAD
+# from tkinter import *
+# from tkinter import ttk
+# import matplotlib
+# import matplotlib.pyplot as plt
+# from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+# =======
 
 import sys
 import pygame
 file = open( "temp.txt" , 'r')
->>>>>>> 1101dcc86c98b62be5db327b60df8a2966b03382
 
 # Use TkAgg in the backend of tkinter application
 matplotlib.use('TkAgg')
