@@ -38,5 +38,5 @@ class Background( object ):
 
         for cur_index in range( 0, self._len_colors ):
             self._hue.fill( self._arr_colors[ cur_index ] )
-            screen.blit( self._hue, ( 0, 0) )
+            screen.blit( self._hue, ( 0, 0 ) )
 
