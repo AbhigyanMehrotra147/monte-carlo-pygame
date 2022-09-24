@@ -1,10 +1,11 @@
+from asyncore import read
 import pygame
 
 class LawLarge( object ):
 
     def __init__( self, pos_x: float, pos_y: float, width: float, height: float, color_rect: tuple,color_line: tuple, monte_file_path: str, formula_image_path: str):
-        self._pos = (pos_x,pos_y)
-        self._size = (width,height)
+        self._POS = (pos_x,pos_y)
+        self._SIZE = (width,height)
         self._border_radius = 0
         self._color_rect = color_rect
         self._rect = None
@@ -22,12 +23,12 @@ class LawLarge( object ):
         self._color_line = color_line
 
     def initialize( self ):
-        self._border_radius = int((self._size[0] + self._size[1])/5)
+        self._border_radius = int((self._SIZE[0] + self._SIZE[1])/5)
 
         self._read_file( file_mode = 'r')
 
         self._create_rect()
-        self._create_line( surf_size =  ( self._size[0]*0.9,self._size[1]*0.3 ) )
+        self._create_line( surf_size =  ( self._SIZE[0]*0.9,self._SIZE[1]*0.3 ) )
         self._create_formula()
 
 
@@ -45,8 +46,8 @@ class LawLarge( object ):
 
     # Creates the rectangle where probability and the equation are displayed
     def _create_rect( self ):
-        self._surface = pygame.Surface( size = self._size )
-        self._rect = pygame.Rect( self._pos, self._size )
+        self._surface = pygame.Surface( size = self._SIZE )
+        self._rect = pygame.Rect( self._POS, self._SIZE )
         pass
 
 
@@ -56,34 +57,49 @@ class LawLarge( object ):
         temp_size = self._formula_surface.get_size()
         self._formula_surface = pygame.transform.scale( surface = self._formula_surface, size = ( temp_size[0]/1.5, temp_size[1]/1.5 ))
 
+    def _get_blit_pos( self, relative_pos: tuple ):
+        return ((self._POS[0] + self._SIZE[0]*relative_pos[0]),(self._POS[1] + self._SIZE[1]*relative_pos[1]))
 
-    def _render_formula( self, screen: pygame.Surface, surface_pos: tuple ):
-        screen.blit( source = self._formula_surface, dest = surface_pos )
+    def _get_draw_rel_pos( self, relative_pos: tuple, relative_surf: pygame.Surface ):
+        surf_size = relative_surf.get_size()
+        return (surf_size[0]*relative_pos[0],surf_size[1]*relative_pos[1])
 
-    def _render_line( self, screen: pygame.Surface, start_pos: tuple, end_pos: tuple, line_width: int, surface_pos: tuple ):
-        surf_size = self._line_surface.get_size()
-        pygame.draw.line( surface = self._line_surface, color = self._color_line, start_pos = (surf_size[0]*start_pos[0], surf_size[1]*start_pos[1]), end_pos = (surf_size[0]*end_pos[0], surf_size[1]*end_pos[1]), width = line_width )
-        self._line_rect.top = (self._pos[0],self._pos[1])
-        # self._line_rect.center = ((self._pos[0] + self._size[0])*0.5,(self._pos[1] + self._size[1])*0.8) 
+    def _render_formula( self, screen: pygame.Surface, relative_formula_pos: tuple ):
+        formula_pos = self._get_blit_pos( relative_pos = relative_formula_pos )
+        screen.blit( source = self._formula_surface, dest = formula_pos )
+
+    def _render_line( self, screen: pygame.Surface, numb_rel_start_pos: tuple, numb_rel_end_pos: tuple, line_width: int, rect_relative_pos: tuple,transparency: int ):
+        # line_start and line_end position are relative to the line_surface here 
+        line_start_pos = self._get_draw_rel_pos( relative_pos = numb_rel_start_pos, relative_surf = self._line_surface )
+        line_end_pos = self._get_draw_rel_pos( relative_pos = numb_rel_end_pos, relative_surf = self._line_surface )
+        pygame.draw.line( surface = self._line_surface, color = self._color_line, start_pos = line_start_pos, end_pos = line_end_pos, width = line_width )
+        rect_pos = self._get_blit_pos(relative_pos = rect_relative_pos)
+        self._line_rect.update(rect_pos,(self._line_surface.get_size()))
+        self._line_surface.set_alpha( transparency )
         screen.blit( source = self._line_surface, dest = self._line_rect )
 
-        pass
-    def _rend_rect( self, screen: pygame.Surface, line_color: int, start_pos_h: tuple, end_pos_h: tuple, start_pos_v: int, end_pos_v: int,  line_width: int ):
+        
+    def _rend_rect( self, screen: pygame.Surface, line_color: int, rel_start_pos_h: tuple, rel_end_pos_h: tuple, rel_start_pos_v: int, rel_end_pos_v: int,  line_width: int, transparency: int ):
         self._surface.fill( color = self._color_rect )
-        pygame.draw.line( surface = self._surface, color = line_color, start_pos = start_pos_h , end_pos = end_pos_h , width = line_width   )
-        pygame.draw.line( surface = self._surface, color = line_color, start_pos = start_pos_v , end_pos = end_pos_v , width = line_width   )
+        hline_start_pos = self._get_draw_rel_pos( relative_pos = rel_start_pos_h, relative_surf = self._surface )
+        hline_end_pos = self._get_draw_rel_pos(relative_pos = rel_end_pos_h,relative_surf = self._surface )
+        vline_start_pos = self._get_draw_rel_pos( relative_pos = rel_start_pos_v,relative_surf = self._surface )
+        vline_end_pos = self._get_draw_rel_pos(relative_pos = rel_end_pos_v, relative_surf = self._surface )
+        pygame.draw.line( surface = self._surface, color = line_color, start_pos = hline_start_pos , end_pos = hline_end_pos , width = line_width )
+        pygame.draw.line( surface = self._surface, color = line_color, start_pos = vline_start_pos , end_pos = vline_end_pos , width = line_width )
+        self._surface.set_alpha( transparency )
         screen.blit( source = self._surface, dest = self._rect )
-        self._surface.set_alpha( 60 )
+        
         # pygame.draw.rect( surface = screen, color=self._color_rect, rect = self._rect, border_radius = self._border_radius )
 
     def _update():
         list_index += 1
 
     def render( self, screen: pygame.Surface ):
-        self._render_formula( screen = screen, surface_pos = ( self._pos[0] + self._size[0]/(1.9), self._pos[1] + self._size[1]/20 ) )
-        self._render_line( screen = screen, start_pos = (0.1,0.7), end_pos = (0.9,0.7), line_width = 4, surface_pos = (self._size[0]*0.1, self._size[1]*0.6 ) )
-        self._rend_rect( screen = screen, line_color = (200,200,200), start_pos_h = (0,self._size[1]/2), end_pos_h = \
-            (self._size[0],self._size[1]/2), start_pos_v = (self._size[0]/2,0), end_pos_v = (self._size[0]/2,self._size[1]/2), line_width=5 )
+        self._render_formula( screen = screen, relative_formula_pos = (0.53,0.05))
+        self._render_line( screen = screen, numb_rel_start_pos = (0.1,0.7), numb_rel_end_pos = (0.9,0.7), line_width = 4, rect_relative_pos = (0.05,0.6), transparency = 100 )
+        self._rend_rect( screen = screen, line_color = (200,200,200), rel_start_pos_h = (0,0.5), rel_end_pos_h = \
+            (1,0.5), rel_start_pos_v = (0.5,0), rel_end_pos_v = (0.5,0.5), line_width=5, transparency = 60 )
 
         
         pass
