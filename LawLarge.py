@@ -33,13 +33,21 @@ class LawLarge( object ):
         self._create_formula()
 
 
+
     def _read_file( self, file_mode: str ):
         file = open(self._monte_file_path,file_mode)
         temp_str = ""
         for line in file:
             temp_str += line
         self._list_bool = list(temp_str.split( " " ))
-    
+
+    def select_smilie( self, address: str ):
+        if self._list_bool[self._list_index] == 0:
+            return address + "sad_smiley.png"
+        else:
+            return "happy_smiley.png"
+
+
     # Creates the surface and rectangle on whch the number line will be displayed along with 
     def _create_line( self, surf_size, ):
         self._line_surface = pygame.Surface( size = surf_size )
@@ -53,7 +61,6 @@ class LawLarge( object ):
         pass
 
 
-    
     def _create_formula( self ):
         self._formula_surface = pygame.image.load( self._formula_image_path )
         temp_size = self._formula_surface.get_size()
@@ -104,8 +111,12 @@ class LawLarge( object ):
         screen.blit( source = self._surface, dest = self._rect )
         
 
-    def _update():
-        list_index += 1
+    def _update_index( self ):
+        if (self._list_index < len(self._list_bool)-1):
+            self._list_index +=1
+        else:
+            self._list_index = 0
+
 
     def render( self, screen: pygame.Surface ):
         self._render_formula( screen = screen, relative_formula_pos = (0.53,0.05))
@@ -113,6 +124,5 @@ class LawLarge( object ):
             line_width = 4, rect_relative_pos = (0.05,0.6), transparency = 255, dot_colors = (0,0,0), number_of_dots = 10, dot_radius = 4 )
         self._rend_rect( screen = screen, line_color = (200,200,200), rel_start_pos_h = (0,0.5), rel_end_pos_h = \
             (1,0.5), rel_start_pos_v = (0.5,0), rel_end_pos_v = (0.5,0.5), line_width=5, transparency = 60 )
+        self._update_index()
 
-        
-        pass
