@@ -96,7 +96,7 @@ class Game( object ):
             self._running = False
         else:
             while( self._running ):
-
+                    
                 cur_time = time()
                 self._delta_T = cur_time - self._prev_time
                 self._prev_time = cur_time
