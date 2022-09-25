@@ -2,6 +2,7 @@
 from asyncore import read
 import pygame
 
+from PIL import Image
 from create_latex_png import create_latex_png
 
 class LawLarge( object ):
@@ -81,7 +82,6 @@ class LawLarge( object ):
         self._rect = pygame.Rect( self._POS, self._SIZE )
         pass
 
-        
     def _create_formula( self ):
         self._formula_surface = pygame.image.load( self._formula_image_path )
         temp_size = self._formula_surface.get_size()
@@ -169,7 +169,7 @@ class LawLarge( object ):
 
     def _render_zi( self ):
         # fetches the tmp image and blits it onto the screen
-        zi = pygame.image.load( self._Z_FILE_NAME)
+        zi = pygame.image.load( Image.open( self._Z_FILE_NAME ).convert( 1 ) )
         zi = pygame.transform.scale( surface = zi, size = (40,40) )
         # zi.set_colorkey( (255,255,255) )
         zi_pos = self._get_rel_pos( relative_pos = (0.1,0.2), relative_surf = self._surface )
