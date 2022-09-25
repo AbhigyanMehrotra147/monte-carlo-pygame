@@ -134,7 +134,7 @@ class LawLarge( object ):
         self._draw_dots( surface = self._line_surface, dot_colors = dot_colors, dot_radius = dot_radius, start_pos = line_start_pos, end_pos = line_end_pos )
         self._draw_smiley( line_start_pos = line_start_pos, line_end_pos = line_end_pos )
         screen.blit( source = self._line_surface, dest = self._line_rect )
-        
+
     def _rend_rect( self, screen: pygame.Surface, line_color: int, rel_start_pos_h: tuple, rel_end_pos_h: tuple, rel_start_pos_v: int, rel_end_pos_v: int,  line_width: int, transparency: int ):
         self._surface.fill( color = self._color_rect )
         hline_start_pos = self._get_rel_pos( relative_pos = rel_start_pos_h, relative_surf = self._surface )
@@ -146,7 +146,7 @@ class LawLarge( object ):
         self._render_zi()
         self._surface.set_alpha( transparency )
         screen.blit( source = self._surface, dest = self._rect )
-        
+
 
     def _update_index( self ):
 
@@ -176,5 +176,4 @@ class LawLarge( object ):
 
         # here the Zi image needs to be blitted
         self._update_index()
-
 
