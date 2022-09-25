@@ -59,9 +59,9 @@ class LawLarge( object ):
     def _select_smilie( self,index: int):
 
         if self._list_bool[index] == 0:
-            return self._sad_smiley
+            return (self._sad_smiley,"sad")
         else:
-            return self._happy_smiley
+            return (self._happy_smiley,"happy")
 
     # Creates the surface and rectangle on whch the number line will be displayed along with 
 
@@ -97,12 +97,13 @@ class LawLarge( object ):
         surf_size = relative_surf.get_size()
         return (surf_size[0]*relative_pos[0],surf_size[1]*relative_pos[1])
 
-    def _draw_dots( self, surface: pygame.Surface, dot_colors: tuple, start_pos: tuple, end_pos: tuple, dot_radius: float ):
+    def _draw_dots( self, surface: pygame.Surface, sad_dot_colors: tuple, happy_dot_colors: tuple, start_pos: tuple, end_pos: tuple, dot_radius: float ):
         line_length = abs(start_pos[0] - end_pos[0])
         gap = int(line_length/(self._number_of_dots+2))
+        j = self._list_index
         y_coord = start_pos[1]
         for i in range(int(start_pos[0]+gap),int(end_pos[0]-gap),gap):
-            pygame.draw.circle(surface = surface, color = dot_colors, center = (start_pos[0]+i,y_coord), radius = dot_radius, width = 0 )
+            pygame.draw.circle(surface = surface, color = sad_dot_colors, center = (start_pos[0]+i,y_coord), radius = dot_radius, width = 0 )
 
     def _draw_smiley( self, line_start_pos: tuple, line_end_pos: tuple):
 
@@ -112,6 +113,7 @@ class LawLarge( object ):
         smiley_size = self._sad_smiley.get_size()
         y_coord = (line_start_pos[1] - smiley_size[1]*1.5)
         x_coord = (line_start_pos[0] + gap - smiley_size[0]*0.5)
+
         for i in range(int(line_start_pos[0] + gap), int(line_end_pos[0] - gap), gap):
             smiley = self._select_smilie(j)
             self._line_surface.blit( source = smiley, dest = (x_coord, y_coord) )
@@ -122,7 +124,7 @@ class LawLarge( object ):
         formula_pos = self._get_rel_screen_pos( relative_pos = relative_formula_pos )
         screen.blit( source = self._formula_surface, dest = formula_pos )
 
-    def _render_line( self, screen: pygame.Surface, numb_rel_start_pos: tuple, numb_rel_end_pos: tuple, line_width: int, rect_relative_pos: tuple,transparency: int, dot_colors: tuple, dot_radius: int ):
+    def _render_line( self, screen: pygame.Surface, numb_rel_start_pos: tuple, numb_rel_end_pos: tuple, line_width: int, rect_relative_pos: tuple,transparency: int, sad_dot_colors: tuple, happy_dot_colors, dot_radius: int ):
         self._line_surface.fill(color=self._color_rect)
         # line_start and line_end position are relative to the line_surface here 
         line_start_pos = self._get_rel_pos( relative_pos = numb_rel_start_pos, relative_surf = self._line_surface )
@@ -131,8 +133,14 @@ class LawLarge( object ):
         self._line_rect.update(rect_pos,(self._line_surface.get_size()))
         self._line_surface.set_alpha( transparency )
         pygame.draw.line( surface = self._line_surface, color = self._color_line, start_pos = line_start_pos, end_pos = line_end_pos, width = line_width )
-        self._draw_dots( surface = self._line_surface, dot_colors = dot_colors, dot_radius = dot_radius, start_pos = line_start_pos, end_pos = line_end_pos )
+        
+        # Drawing dots on the screen
+
         self._draw_smiley( line_start_pos = line_start_pos, line_end_pos = line_end_pos )
+        self._draw_dots( surface = self._line_surface, sad_dot_colors = sad_dot_colors,happy_dot_colors = happy_dot_colors , dot_radius = dot_radius, start_pos = line_start_pos, end_pos = line_end_pos )
+        
+        # blitting the line on the screen
+
         screen.blit( source = self._line_surface, dest = self._line_rect )
 
     def _rend_rect( self, screen: pygame.Surface, line_color: int, rel_start_pos_h: tuple, rel_end_pos_h: tuple, rel_start_pos_v: int, rel_end_pos_v: int,  line_width: int, transparency: int ):
@@ -170,7 +178,7 @@ class LawLarge( object ):
     def render( self, screen: pygame.Surface ):
         self._render_formula( screen = screen, relative_formula_pos = (0.53,0.05))
         self._render_line( screen = screen, numb_rel_start_pos = (0,0.7), numb_rel_end_pos = (1,0.7), \
-            line_width = 4, rect_relative_pos = (0.05,0.6), transparency = 255, dot_colors = (0,0,0), dot_radius = 4 )
+            line_width = 4, rect_relative_pos = (0.05,0.6), transparency = 255, sad_dot_colors = (0,0,0), happy_dot_colors = (100,255,100), dot_radius = 4 )
         self._rend_rect( screen = screen, line_color = (200,200,200), rel_start_pos_h = (0,0.5), rel_end_pos_h = \
             (1,0.5), rel_start_pos_v = (0.5,0), rel_end_pos_v = (0.5,0.5), line_width=5, transparency = 60 )
 
