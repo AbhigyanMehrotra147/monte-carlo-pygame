@@ -31,7 +31,6 @@ class DepictBox:
         self._v_line_color = v_line_color
     def inititalize( self ):
         self._create_self()
-        pass
 
     def _create_self( self ):
         # Setting color key so that it gets removed. 
