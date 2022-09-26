@@ -58,9 +58,9 @@ class Game( object ):
             self._LawLarge.initialize()
             # self._ash = Person( cur_x = self._WIDTH/(3/2), cur_y= self._HEIGHT/(3/2) , image_path = "./boy.png",  json_path= "./boy.json", NUM_FRAMES=5, sprite_index=0, x_name="x", y_name = "y", width_name = "width", height_name = "height" )
 
-            self._DepictBox = DepictBox( SIZE = (500,300) ,POS = (self._WIDTH*0.05, self._HEIGHT*0.01),BORDER_RADIUS= 10, color=(100,100,100), blit_screen=self._screen, \
+            self._DepictBox = DepictBox( SIZE = (self._WIDTH*0.4,self._HEIGHT*0.3) ,POS = (self._WIDTH*0.01,self._HEIGHT*0.01),BORDER_RADIUS= 10, color=(100,100,100), blit_screen=self._screen, \
                  h_line_color= (0,0,0), h_line_coords=[(0,0.5),(1,0.5)], h_line_width= 5, v_line_color=(0,0,0), v_line_coords=[(0.5,0),(0.5,0.5)], v_line_width=5 )
-            self._DepictBox.inititalize()
+            self._DepictBox.create()
             self._prev_time = time()
 
         return success
@@ -74,7 +74,7 @@ class Game( object ):
 
         self._background.render_background( screen = self._screen )
         # self._ash.render( self._window )
-        self._background.render_hue( self._screen )
+        # self._background.render_hue( self._screen )
         # self._LawLarge.render( screen = self._screen )
         self._DepictBox.render()
 

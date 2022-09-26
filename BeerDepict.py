@@ -1,6 +1,33 @@
 
-from tracemalloc import start
+line_surface_coords = (0.1,0.7)
+line_surface_size = (0.8,0.2)
+line_surface_color = None 
+
+line_coords = [(0.1,0.8),(0.9,0.8)]
+line_color = (255,255,255)
+line_width = 5
+
+happy_dot_color = (100,220,100)
+happy_dot_radius = (0.05,0.05)
+
+sad_dot_color = (0,0,0)
+sad_dot_radius = (0.001,0.001)
+
+popsickle_color = (200,200,200)
+popsickle_width = 2
+popsicle_end_pose = (5,5)
+
+sad_smiley_pos = (5,5)
+sad_smiley_size = (0.05,0.05)
+
+happy_smiley_pos = (5,5)
+happy_smiley_size = (0.05,0.05)
+
+smiley_address = "./assets/smiley/"
+
+
 import pygame
+from BeerLine import BeerLine
 from common_methods import get_relative_coords
 
 class DepictBox:
@@ -29,15 +56,29 @@ class DepictBox:
         self._v_line_end = v_line_coords[1]
         self._v_line_width = v_line_width
         self._v_line_color = v_line_color
-    def inititalize( self ):
+
+        self._BeerLine = None
+
+
+    def create( self ):
+        # Creating the surface for the self
         self._create_self()
+        
+        # The surface is now created and hence can be passes to BeerLine 
+        self._BeerLine = BeerLine( blit_surface = self._surface, SIZE= line_surface_size, POS= line_surface_coords,\
+            COLOR= self._color, line_coords= line_coords, line_color= line_color, line_width= line_width,\
+                sad_dot_colors= sad_dot_color, sad_dot_radius= sad_dot_radius, happy_dot_colors= happy_dot_color,\
+                    happy_dot_radius= happy_dot_radius, popsickle_color= popsickle_color, popsickle_width= popsickle_width,\
+                        popsickle_end_pos= popsicle_end_pose, sad_smiley_pos= sad_smiley_pos, sad_smiley_size= sad_smiley_size,\
+                            happy_smiley_pos= happy_smiley_pos, happy_smiley_size= happy_smiley_size, smiley_address= smiley_address )
+        self._BeerLine.create()
 
     def _create_self( self ):
-        # Setting color key so that it gets removed. 
-        self._surface = pygame.Surface( size= self._SIZE )
+        # Setting color key so that the background gets removed gets removed. 
+        self._surface = pygame.Surface( size = self._SIZE )
         self._surface.set_colorkey (self._color)
         self._rect = pygame.Rect( self._POS, self._SIZE )
-
+ 
         # Getting position of lines to be drawn
         self._h_line_start = get_relative_coords( relative_surface = self._surface, relative_coords = self._h_line_start )
         self._h_line_end = get_relative_coords( relative_surface = self._surface, relative_coords = self._h_line_end )
@@ -48,14 +89,24 @@ class DepictBox:
         pass
 
     def _render_lines( self ):
+
+        # Drawing action kept seperatly in a function to ease reading
+        # Drawing the horizontal and vertical dividers
         pygame.draw.line( surface= self._surface, color= self._h_line_color, start_pos= self._h_line_start, end_pos= self._h_line_end, width=self._h_line_width )
         pygame.draw.line( surface= self._surface, color= self._v_line_color, start_pos= self._v_line_start, end_pos= self._v_line_end, width= self._v_line_width )
     
     def _render_self( self ):
         self._surface.fill( color=self._color )
         self._render_lines()
-        self._blit_screen.blit( source = self._surface, dest = self._rect ) 
+        # self._BeerLine._blit_surface = self._surface
+        
+       
     
     # Function will call all renders, including self, BeerLine, Formula and Zi's
     def render( self ):
+        
+        # print(self._surface is None)
         self._render_self()
+        self._BeerLine.render()
+        self._blit_screen.blit( source = self._surface, dest = self._rect ) 
+        
