@@ -1,7 +1,5 @@
 
-from asyncore import read
 import pygame
-
 from PIL import Image
 from create_latex_png import create_latex_png
 
@@ -40,7 +38,7 @@ class LawLarge( object ):
 
         self._read_file( file_mode = 'r')
         self._create_rect()
-        self._create_line( surf_size =  ( self._SIZE[0]*0.9,self._SIZE[1]*0.3 ), smiley_size = (30,30) )
+        self._create_line( surf_size =  ( self._SIZE[0]*0.9,self._SIZE[1]*0.3 ), smiley_size = ( self._SIZE[0]*0.12 , self._SIZE[1]*0.12 ) )
         self._create_formula()
 
     def _read_file( self, file_mode: str ):
@@ -66,7 +64,7 @@ class LawLarge( object ):
 
     # Creates the surface and rectangle on whch the number line will be displayed along with 
 
-    def _scale_smiley( self, smiley_size: tuple):
+    def _scale_smiley( self, smiley_size: tuple ):
         self._happy_smiley = pygame.transform.scale( surface = self._happy_smiley, size = smiley_size )
         self._sad_smiley = pygame.transform.scale( surface = self._sad_smiley, size = smiley_size)
 
@@ -79,12 +77,13 @@ class LawLarge( object ):
     # Creates the and surface rectangle where probability and the equation are displayed
     def _create_rect( self ):
         self._surface = pygame.Surface( size = self._SIZE )
+        # self._surface.set_colorkey(self._color_rect)
         self._rect = pygame.Rect( self._POS, self._SIZE )
         pass
 
     def _create_formula( self ):
         self._formula_surface = pygame.image.load( self._formula_image_path )
-        temp_size = self._formula_surface.get_size()
+        temp_size = (self._SIZE[0]*0.5,self._SIZE[1]*0.5)
         self._formula_surface = pygame.transform.scale( surface = self._formula_surface, size = ( temp_size[0]/1.5, temp_size[1]/1.5 ))
         self._formula_rect = self._formula_surface.get_rect()
 
@@ -97,13 +96,17 @@ class LawLarge( object ):
         surf_size = relative_surf.get_size()
         return (surf_size[0]*relative_pos[0],surf_size[1]*relative_pos[1])
 
-    def _draw_dots( self, surface: pygame.Surface, sad_dot_colors: tuple, happy_dot_colors: tuple, start_pos: tuple, end_pos: tuple, dot_radius: float ):
+    def _draw_dots( self, surface: pygame.Surface, sad_dot_colors: tuple, happy_dot_colors: tuple, start_pos: tuple, end_pos: tuple, dot_radius: float, happy_sad: list ):
         line_length = abs(start_pos[0] - end_pos[0])
         gap = int(line_length/(self._number_of_dots+2))
-        j = self._list_index
         y_coord = start_pos[1]
+        j = 0
         for i in range(int(start_pos[0]+gap),int(end_pos[0]-gap),gap):
-            pygame.draw.circle(surface = surface, color = sad_dot_colors, center = (start_pos[0]+i,y_coord), radius = dot_radius, width = 0 )
+            if happy_sad[j] == "happy":
+                pygame.draw.circle(surface = surface, color = happy_dot_colors, center = (start_pos[0]+i,y_coord), radius = dot_radius, width = 0 )
+            else:
+                pygame.draw.circle(surface = surface, color = sad_dot_colors, center = (start_pos[0]+i,y_coord), radius = dot_radius, width = 0 )
+            j+=1
 
     def _draw_smiley( self, line_start_pos: tuple, line_end_pos: tuple):
 
@@ -111,14 +114,23 @@ class LawLarge( object ):
         gap = int(line_length/(self._number_of_dots + 2))
         j = self._list_index
         smiley_size = self._sad_smiley.get_size()
-        y_coord = (line_start_pos[1] - smiley_size[1]*1.5)
+        y_coord = 0
         x_coord = (line_start_pos[0] + gap - smiley_size[0]*0.5)
-
+        # happy_sad list will be returned and used in draw_dots to change the color of the dots in sink with the emotion
+        happy_sad = []
         for i in range(int(line_start_pos[0] + gap), int(line_end_pos[0] - gap), gap):
-            smiley = self._select_smilie(j)
+            # h_s represents happy or sad smiley
+            (smiley,h_s) = self._select_smilie(j)
+            if( h_s == "sad" ):
+                y_coord = line_start_pos[0]
+            else:
+                y_coord = line_start_pos[0] 
             self._line_surface.blit( source = smiley, dest = (x_coord, y_coord) )
             x_coord += gap
             j+=1
+            happy_sad.append(h_s)
+        return happy_sad
+
 
     def _render_formula( self, screen: pygame.Surface, relative_formula_pos: tuple ):
         formula_pos = self._get_rel_screen_pos( relative_pos = relative_formula_pos )
@@ -135,9 +147,10 @@ class LawLarge( object ):
         pygame.draw.line( surface = self._line_surface, color = self._color_line, start_pos = line_start_pos, end_pos = line_end_pos, width = line_width )
         
         # Drawing dots on the screen
-
-        self._draw_smiley( line_start_pos = line_start_pos, line_end_pos = line_end_pos )
-        self._draw_dots( surface = self._line_surface, sad_dot_colors = sad_dot_colors,happy_dot_colors = happy_dot_colors , dot_radius = dot_radius, start_pos = line_start_pos, end_pos = line_end_pos )
+        # Getting happy_sad list from _self._draw_smiley
+        happy_sad = self._draw_smiley( line_start_pos = line_start_pos, line_end_pos = line_end_pos )
+        self._draw_dots( surface = self._line_surface, sad_dot_colors = sad_dot_colors,happy_dot_colors = happy_dot_colors ,\
+             dot_radius = dot_radius, start_pos = line_start_pos, end_pos = line_end_pos, happy_sad = happy_sad )
         
         # blitting the line on the screen
 
@@ -169,7 +182,10 @@ class LawLarge( object ):
 
     def _render_zi( self ):
         # fetches the tmp image and blits it onto the screen
-        zi = pygame.image.load( Image.open( self._Z_FILE_NAME ).convert( 1 ) )
+        # 1 in image changes image to monochrome
+        zi = pygame.image.load( self._Z_FILE_NAME )
+        zi.set_colorkey((255,255,255))
+        zi = zi.convert_alpha(  ) 
         zi = pygame.transform.scale( surface = zi, size = (40,40) )
         # zi.set_colorkey( (255,255,255) )
         zi_pos = self._get_rel_pos( relative_pos = (0.1,0.2), relative_surf = self._surface )
@@ -178,9 +194,9 @@ class LawLarge( object ):
     def render( self, screen: pygame.Surface ):
         self._render_formula( screen = screen, relative_formula_pos = (0.53,0.05))
         self._render_line( screen = screen, numb_rel_start_pos = (0,0.7), numb_rel_end_pos = (1,0.7), \
-            line_width = 4, rect_relative_pos = (0.05,0.6), transparency = 255, sad_dot_colors = (0,0,0), happy_dot_colors = (100,255,100), dot_radius = 4 )
-        self._rend_rect( screen = screen, line_color = (200,200,200), rel_start_pos_h = (0,0.5), rel_end_pos_h = \
-            (1,0.5), rel_start_pos_v = (0.5,0), rel_end_pos_v = (0.5,0.5), line_width=5, transparency = 60 )
+            line_width = 4, rect_relative_pos = (0.05,0.6), transparency = 255, sad_dot_colors = (0,0,0), happy_dot_colors = (50,200,50), dot_radius = 4 )
+        self._rend_rect( screen = screen, line_color = (0,0,0), rel_start_pos_h = (0,0.5), rel_end_pos_h = \
+            (1,0.5), rel_start_pos_v = (0.5,0), rel_end_pos_v = (0.5,0.5), line_width=5, transparency = 20 )
 
         # here the Zi image needs to be blitted
         self._update_index()

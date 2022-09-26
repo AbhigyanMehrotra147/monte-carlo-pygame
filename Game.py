@@ -45,18 +45,22 @@ class Game( object ):
             from Person import Person
             from Background import Background
             from LawLarge import LawLarge
-
+            from BeerDepict import DepictBox
             self._window = pygame.display.set_mode( size= self._SIZE, flags= self._FLAGS, depth= 1, display= 0, vsync= 0 )
             pygame.display.set_caption( self._TITLE )
             self._clock = pygame.time.Clock()
 
             self._background = Background( screen = self._screen )
 
-            self._LawLarge = LawLarge(pos_x = self._WIDTH*0.05, pos_y = self._HEIGHT*0.01, width = 400, height = 170, color_rect = ( 100,100,140 ), \
-                color_line = (255,255,255,255), monte_file_path = "temp.txt", formula_image_path = "formula.png", number_of_dots = 10, smiley_address = "./assets/smiley/" )
+            self._LawLarge = LawLarge(pos_x = self._WIDTH*0.05, pos_y = self._HEIGHT*0.01, width = 500, height = 300, color_rect = ( 100,100,140 ), \
+                color_line = (255,255,255,255), monte_file_path = "temp.txt", formula_image_path = "formula.png", number_of_dots = 6, smiley_address = "./assets/smiley/" )
+            
             self._LawLarge.initialize()
             # self._ash = Person( cur_x = self._WIDTH/(3/2), cur_y= self._HEIGHT/(3/2) , image_path = "./boy.png",  json_path= "./boy.json", NUM_FRAMES=5, sprite_index=0, x_name="x", y_name = "y", width_name = "width", height_name = "height" )
 
+            self._DepictBox = DepictBox( SIZE = (500,300) ,POS = (self._WIDTH*0.05, self._HEIGHT*0.01),BORDER_RADIUS= 10, color=(100,100,100), blit_screen=self._screen, \
+                 h_line_color= (0,0,0), h_line_coords=[(0,0.5),(1,0.5)], h_line_width= 5, v_line_color=(0,0,0), v_line_coords=[(0.5,0),(0.5,0.5)], v_line_width=5 )
+            self._DepictBox.inititalize()
             self._prev_time = time()
 
         return success
@@ -71,7 +75,8 @@ class Game( object ):
         self._background.render_background( screen = self._screen )
         # self._ash.render( self._window )
         self._background.render_hue( self._screen )
-        self._LawLarge.render( screen = self._screen )
+        # self._LawLarge.render( screen = self._screen )
+        self._DepictBox.render()
 
         # fps_text = pygame.font.SysFont( "impact", 50 ).render( str(cur_fps), 1, (0,0,0))
         # self._window.blit( fps_text, ( self._WIDTH / 2, 100) )
@@ -107,7 +112,7 @@ class Game( object ):
                 self._handle_events()
                 self._update()
                 self._render()
-                pygame.time.delay(100)
+                pygame.time.delay(10)
         self._clean()
         print( 'Exited game instance!' )
 
