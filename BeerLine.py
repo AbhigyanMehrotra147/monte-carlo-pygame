@@ -1,4 +1,5 @@
 
+from imp import source_from_cache
 import pygame
 import common_methods as cm
 
@@ -58,7 +59,7 @@ class BeerLine:
         self._smiley_address = smiley_address
         self._sad_position = sad_smiley_pos
         self._happy_position = happy_smiley_pos
-        self._sad_smiley_Size = sad_smiley_size
+        self._sad_smiley_size = sad_smiley_size
         self._happy_smiley_size = happy_smiley_size
 
         # Initializing the list of indices
@@ -103,13 +104,18 @@ class BeerLine:
     def _create_smiley( self ):
         
         # Scaling and storing sad smiley
+        # Getting the actual relative size for happy smiley from the fractional sizes
         self._sad_smiley = pygame.image.load( self._smiley_address + "sad_smiley.png" )
-        self._sad_smiley = pygame.transform.scale( surface = self._sad_smiley, size = self._sad_smiley_Size )
+        self._sad_smiley_size = cm.preserved_relative_scaling( relative_surface = self._surface, relative_scale= 0.003, sub_surface= self._sad_smiley )
+        self._sad_smiley = pygame.transform.scale( surface = self._sad_smiley, size = self._sad_smiley_size )
         
         # Scaling and storing happy smiley
+        # Getting actual relative size for sad smiley from the fractional sizes
         self._happy_smiley = pygame.image.load( self._smiley_address + "happy_smiley.png" )
-        self._happy_smiley_size = pygame.transform.scale( surface = self._happy_smiley, size = self._happy_smiley_size)
-    
+        self._happy_smiley_size = cm.preserved_relative_scaling( relative_surface = self._surface, relative_scale= 0.003, sub_surface= self._happy_smiley )
+        self._happy_smiley = pygame.transform.scale( surface = self._happy_smiley, size = self._happy_smiley_size)
+
+
     # Calling all creates togethor
     def create( self ):
         self._create_surf()
@@ -119,9 +125,17 @@ class BeerLine:
         self._create_smiley()
 
 
+    def _render_self( self ):
+        self._surface.fill( self._COLOR ) 
+    
+    def _render_line( self ):
+        # Drawing line on surface
+        pygame.draw.line( surface = self._surface, color = self._line_color, start_pos = self._line_start_pos, \
+            end_pos= self._line_end_pos, width = self._line_width )
+    
     # Rendering dots
     # Dots will be rolling on the screen
-    # Will return dot position array and pass it to _render_popsickle 
+    # Will return dot position array and pass it to _render_popsickle
     def _render_dots( self ):
         x_coord = self._line_start_pos[0] + self._first_dot_position
         y_coord = self._line_start_pos[1]
@@ -143,10 +157,17 @@ class BeerLine:
     # Rendering popsickle
     # happy and sad popsickle will have different heights 
     def _render_popsickle( self ):
+        # Depending on i the type of popsickle will be blitted
         i = cm.list_index
+
         self._popsickle_end_positions = []
+
+        end_coord = None
         for coordinate in self._dot_positions:
+            
+            # Adjusting coordinates with size of popsickle 
             coordinate = (coordinate[0] - self._popsickle_width/2, coordinate[1])
+            
             if( cm.list_bool[i] ) == 1:
                 end_coord = ( coordinate[0], coordinate[1] - self._happy_popsickle_length )
                 pygame.draw.line( surface= self._surface, color= self._happy_popsickle_color, start_pos= coordinate,\
@@ -155,16 +176,26 @@ class BeerLine:
                 end_coord = ( coordinate[0], coordinate[1] - self._sad_popsickle_length )
                 pygame.draw.line( surface = self._surface, color= self._sad_popsikle_color, start_pos= coordinate,\
                     end_pos= end_coord, width= self._popsickle_width )
+            
+            # Stroing end positions to be passed to _render_smiley
             self._popsickle_end_positions.append(end_coord)
             i+=1
-    def _render_line( self ):
-        # Drawing line on surface
-        pygame.draw.line( surface = self._surface, color = self._line_color, start_pos = self._line_start_pos, \
-            end_pos= self._line_end_pos, width = self._line_width )
     
-    def _render_self( self ):
-        self._surface.fill( self._COLOR )
-        
+    def _render_smiley( self ):
+        # Depending on i happy or sad smiley will be blitted
+        i = cm.list_index
+        for coordinate in self._popsickle_end_positions:
+            
+            if( cm.list_bool[i] == 1 ):
+                # Adjusting coordinates to the center
+                coordinate = cm.adjust_to_center_draw( coordinates= coordinate, draw_size= self._happy_smiley_size )
+                self._surface.blit( source= self._happy_smiley, dest= coordinate )
+            else:
+                coordinate = cm.adjust_to_center_draw( coordinates= coordinate, draw_size= self._sad_smiley_size)
+                self._surface.blit( source= self._sad_smiley, dest= coordinate )
+            # print(coordinate)
+            i+=1
+
 
     # Updating self._first_dot_position
     def _update_dot_position( self ):
@@ -185,6 +216,7 @@ class BeerLine:
         self._render_line()
         self._render_dots()
         self._render_popsickle()
+        self._render_smiley()
         self._blit_surface.blit( source = self._surface, dest = self._rect )
         self._update()
         

@@ -1,9 +1,9 @@
 
 line_surface_coords = (0.1,0.65)
-line_surface_size = (0.8,0.2)
+line_surface_size = (0.8,0.3)
 line_surface_color = None 
 
-line_coords = [(0.1,0.8),(0.9,0.8)]
+line_coords = [(0.1,0.9),(0.9,0.9)]
 line_color = (20,20,20)
 line_width = 5
 
@@ -24,10 +24,12 @@ happy_popsickle_length = 0.7
 sad_popsicle_length = 0.35
 
 sad_smiley_pos = (5,5)
-sad_smiley_size = (0.05,0.05)
+sad_smiley_size = (0.1,0.1)
+sad_smiley_scale = 0.0023
 
 happy_smiley_pos = (5,5)
-happy_smiley_size = (0.05,0.05)
+happy_smiley_size = (0.1,0.1)
+happy_smiley_scale = 0.0023
 
 smiley_address = "./assets/smiley/"
 
