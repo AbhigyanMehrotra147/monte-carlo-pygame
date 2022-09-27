@@ -1,17 +1,20 @@
 
-line_surface_coords = (0.1,0.7)
+line_surface_coords = (0.1,0.65)
 line_surface_size = (0.8,0.2)
 line_surface_color = None 
 
 line_coords = [(0.1,0.8),(0.9,0.8)]
-line_color = (255,255,255)
+line_color = (200,200,200)
 line_width = 5
 
 happy_dot_color = (100,220,100)
-happy_dot_radius = (0.05,0.05)
+happy_dot_radius = (0.02,0.005)
 
-sad_dot_color = (0,0,0)
-sad_dot_radius = (0.001,0.001)
+sad_dot_color = (220,100,100)
+sad_dot_radius = (0.01,0.001)
+
+number_of_dots = 8
+dot_pace = 5
 
 popsickle_color = (200,200,200)
 popsickle_width = 2
@@ -25,6 +28,7 @@ happy_smiley_size = (0.05,0.05)
 
 smiley_address = "./assets/smiley/"
 
+monte_file_path = "temp.txt"
 
 import pygame
 from BeerLine import BeerLine
@@ -68,9 +72,10 @@ class DepictBox:
         self._BeerLine = BeerLine( blit_surface = self._surface, SIZE= line_surface_size, POS= line_surface_coords,\
             COLOR= self._color, line_coords= line_coords, line_color= line_color, line_width= line_width,\
                 sad_dot_colors= sad_dot_color, sad_dot_radius= sad_dot_radius, happy_dot_colors= happy_dot_color,\
-                    happy_dot_radius= happy_dot_radius, popsickle_color= popsickle_color, popsickle_width= popsickle_width,\
-                        popsickle_end_pos= popsicle_end_pose, sad_smiley_pos= sad_smiley_pos, sad_smiley_size= sad_smiley_size,\
-                            happy_smiley_pos= happy_smiley_pos, happy_smiley_size= happy_smiley_size, smiley_address= smiley_address )
+                    happy_dot_radius= happy_dot_radius, numer_of_dots= number_of_dots, dot_pace= dot_pace,\
+                        popsickle_color= popsickle_color, popsickle_width= popsickle_width, popsickle_end_pos= popsicle_end_pose, 
+                            sad_smiley_pos= sad_smiley_pos, sad_smiley_size= sad_smiley_size, happy_smiley_pos= happy_smiley_pos,\
+                                happy_smiley_size= happy_smiley_size, smiley_address= smiley_address, monte_file_path= monte_file_path )
         self._BeerLine.create()
 
     def _create_self( self ):
