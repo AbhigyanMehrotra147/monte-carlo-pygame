@@ -10,9 +10,9 @@ class BeerLine:
     # Line coordinates are given as a list in which both relative start_pos and relative_pos are specified as seperate tuples 
     def __init__( self, blit_surface: pygame.Surface, SIZE: tuple, POS: tuple, COLOR: tuple, line_coords: list, line_color: tuple, line_width: float, \
         sad_dot_colors: float, sad_dot_radius: float, happy_dot_colors: tuple, happy_dot_radius: float, \
-            numer_of_dots: tuple, dot_pace: float, popsickle_color: tuple, popsickle_width: float, popsickle_end_pos, \
+            numer_of_dots: tuple, dot_pace: float, happy_popsickle_color: tuple, sad_popsickle_color: tuple, popsickle_width: float, happy_popsickle_length: float, \
                 sad_smiley_pos: tuple, happy_smiley_pos: tuple, sad_smiley_size: tuple, happy_smiley_size: tuple, \
-                    smiley_address: tuple, monte_file_path: str ):
+                    sad_popsickle_length: float, smiley_address: tuple, monte_file_path: str ):
         
         self._blit_surface = blit_surface
         self._surface = None
@@ -44,9 +44,13 @@ class BeerLine:
         self._dot_positions = []
 
         # Attributes for the popsickle
-        self._popsickle_color = popsickle_color
+        # The popsickle_length is relative to the surface of the class
+        self._happy_popsickle_color = happy_popsickle_color
+        self._sad_popsikle_color = sad_popsickle_color
         self._popsickle_width = popsickle_width
-        self._popsickle_end_pos = popsickle_end_pos
+        self._happy_popsickle_length = happy_popsickle_length
+        self._sad_popsickle_length = sad_popsickle_length
+        self._popsickle_end_positions = []
 
         # Attributs for the smiley
         self._sad_smiley = None
@@ -76,7 +80,9 @@ class BeerLine:
     def _create_line( self ):
         self._line_start_pos = cm.get_relative_coords( relative_surface = self._surface, relative_coords = self._line_start_pos )
         self._line_end_pos  = cm.get_relative_coords( relative_surface = self._surface, relative_coords = self._line_end_pos )
-
+    
+    # The first_dot tell on which position the first dot should land.
+    # the first dot is subtracted by the dot pace after each iteration(blitting)  
     def _create_dots( self ):
 
         self._line_length = abs(self._line_start_pos[0] - self._line_end_pos[0])
@@ -86,6 +92,13 @@ class BeerLine:
         # Getting Actual Relative radius for dots
         self._sad_dot_radius = cm.get_relative_size( relative_surface= self._surface, relative_size= self._sad_dot_radius )
         self._happy_dot_radius = cm.get_relative_size( relative_surface= self._surface, relative_size= self._happy_dot_radius )
+
+    # Getting the actual relative legnths of the popsickles
+    # Getting the actual relative width of the popsickle
+    def _create_popsickle( self ):
+        self._happy_popsickle_length = self._SIZE[1]*self._happy_popsickle_length
+        self._sad_popsickle_length = self._SIZE[1]*self._sad_popsickle_length
+        self._popsickle_width = int(self._SIZE[0]*self._popsickle_width)
 
     def _create_smiley( self ):
         
@@ -102,29 +115,48 @@ class BeerLine:
         self._create_surf()
         self._create_line()
         self._create_dots()
+        self._create_popsickle()
         self._create_smiley()
-    
+
+
     # Rendering dots
     # Dots will be rolling on the screen
-    # Will return dot position array and pass it to _render_smiley 
+    # Will return dot position array and pass it to _render_popsickle 
     def _render_dots( self ):
         x_coord = self._line_start_pos[0] + self._first_dot_position
         y_coord = self._line_start_pos[1]
         self._dot_positions= []
         j = cm.list_index
         dot_center = ( x_coord, y_coord )
-        for i in range( int(x_coord), int(self._line_end_pos[0]), self._dot_gaps):
+        for i in range( int(x_coord), int(self._line_end_pos[0] ), self._dot_gaps):
             if( cm.list_bool[j] == 1 ):
                 pygame.draw.circle( surface= self._surface, color= self._happy_dot_colors, center= dot_center,\
                     radius= (5), width= 0 )
             else:
                 pygame.draw.circle( surface= self._surface, color= self._sad_dot_colors, center= dot_center,\
                     radius= (5), width= 0 )
+            self._dot_positions.append(dot_center)
             x_coord += self._dot_gaps
             dot_center = ( x_coord,y_coord )
-            self._dot_positions.append(dot_center)
             j+=1
 
+    # Rendering popsickle
+    # happy and sad popsickle will have different heights 
+    def _render_popsickle( self ):
+        i = cm.list_index
+        self._popsickle_end_positions = []
+        for coordinate in self._dot_positions:
+            coordinate = (coordinate[0] - self._popsickle_width/2, coordinate[1])
+            if( cm.list_bool[i] ) == 1:
+                end_coord = ( coordinate[0], coordinate[1] - self._happy_popsickle_length )
+                pygame.draw.line( surface= self._surface, color= self._happy_popsickle_color, start_pos= coordinate,\
+                    end_pos= end_coord, width= self._popsickle_width )
+            else:
+                end_coord = ( coordinate[0], coordinate[1] - self._sad_popsickle_length )
+                pygame.draw.line( surface = self._surface, color= self._sad_popsikle_color, start_pos= coordinate,\
+                    end_pos= end_coord, width= self._popsickle_width )
+            self._popsickle_end_positions.append(end_coord)
+            i+=1
     def _render_line( self ):
         # Drawing line on surface
         pygame.draw.line( surface = self._surface, color = self._line_color, start_pos = self._line_start_pos, \
@@ -152,6 +184,7 @@ class BeerLine:
         self._render_self()
         self._render_line()
         self._render_dots()
+        self._render_popsickle()
         self._blit_surface.blit( source = self._surface, dest = self._rect )
         self._update()
         
