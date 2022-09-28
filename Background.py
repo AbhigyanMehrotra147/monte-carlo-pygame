@@ -18,9 +18,9 @@ class Background( object ):
         self._arr_colors = [ [ 255, 0, 0, 0 ], [ 125, 181, 217, 0 ], [ 73, 159, 214, 0 ], [ 45, 132, 215, 0 ], [ 54, 117, 205, 0 ], [ 47, 93, 197, 0 ], [ 32, 74, 156, 0 ], [ 255, 52, 127, 0 ] ]
         self._len_colors = len( self._arr_colors )
 
-        self._PROMENARD = pygame.Surface( screen.get_size() ).convert_alpha()
-        self._PROMENARD = pygame.image.load( "./background.png" ).convert_alpha()
-
+        
+        self._PROMENARD = pygame.image.load( "./Environment.png" ).convert_alpha()
+        self._PROMENARD = pygame.transform.scale( surface= self._PROMENARD, size= screen.get_size())
     def update( self ):
         self._cur_focus = ( self._cur_focus + 1 ) % self._len_colors
         # print( "The current focus is: ", self._cur_focus )

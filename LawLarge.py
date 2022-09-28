@@ -77,7 +77,7 @@ class LawLarge( object ):
     # Creates the and surface rectangle where probability and the equation are displayed
     def _create_rect( self ):
         self._surface = pygame.Surface( size = self._SIZE )
-        # self._surface.set_colorkey(self._color_rect)
+        self._surface.set_colorkey(self._color_rect)
         self._rect = pygame.Rect( self._POS, self._SIZE )
         pass
 

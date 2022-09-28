@@ -1,6 +1,42 @@
 
-from tracemalloc import start
+line_surface_coords = (0.1,0.65)
+line_surface_size = (0.8,0.3)
+line_surface_color = None 
+
+line_coords = [(0.1,0.9),(0.9,0.9)]
+line_color = (20,20,20)
+line_width = 5
+
+happy_dot_color = (100,220,100)
+happy_dot_radius = (0.02,0.005)
+
+sad_dot_color = (220,100,100)
+sad_dot_radius = (0.01,0.001)
+
+number_of_dots = 8
+dot_pace = 5
+
+# Popsickkle dimensions are relative to beerline surface and not Beerdepict surface
+happy_popsickle_color = happy_dot_color
+sad_popsickle_color = sad_dot_color
+popsickle_width = 0.0075
+happy_popsickle_length = 0.7
+sad_popsicle_length = 0.35
+
+sad_smiley_pos = (5,5)
+sad_smiley_size = (0.1,0.1)
+sad_smiley_scale = 0.0023
+
+happy_smiley_pos = (5,5)
+happy_smiley_size = (0.1,0.1)
+happy_smiley_scale = 0.0023
+
+smiley_address = "./assets/smiley/"
+
+monte_file_path = "temp.txt"
+
 import pygame
+from BeerLine import BeerLine
 from common_methods import get_relative_coords
 
 class DepictBox:
@@ -29,15 +65,31 @@ class DepictBox:
         self._v_line_end = v_line_coords[1]
         self._v_line_width = v_line_width
         self._v_line_color = v_line_color
-    def inititalize( self ):
+
+        self._BeerLine = None
+
+
+    def create( self ):
+        # Creating the surface for the self
         self._create_self()
+        
+        # The surface is now created and hence can be passes to BeerLine 
+        self._BeerLine = BeerLine( blit_surface = self._surface, SIZE= line_surface_size, POS= line_surface_coords,\
+            COLOR= self._color, line_coords= line_coords, line_color= line_color, line_width= line_width,\
+                sad_dot_colors= sad_dot_color, sad_dot_radius= sad_dot_radius, happy_dot_colors= happy_dot_color,\
+                    happy_dot_radius= happy_dot_radius, numer_of_dots= number_of_dots, dot_pace= dot_pace,\
+                        happy_popsickle_color= happy_popsickle_color, sad_popsickle_color= sad_popsickle_color, popsickle_width= popsickle_width, happy_popsickle_length= happy_popsickle_length, 
+                            sad_popsickle_length= sad_popsicle_length, sad_smiley_pos= sad_smiley_pos, sad_smiley_size= sad_smiley_size,\
+                                happy_smiley_pos= happy_smiley_pos, happy_smiley_size= happy_smiley_size, smiley_address= smiley_address,\
+                                     monte_file_path= monte_file_path )
+        self._BeerLine.create()
 
     def _create_self( self ):
-        # Setting color key so that it gets removed. 
-        self._surface = pygame.Surface( size= self._SIZE )
+        # Setting color key so that the background gets removed gets removed. 
+        self._surface = pygame.Surface( size = self._SIZE )
         self._surface.set_colorkey (self._color)
         self._rect = pygame.Rect( self._POS, self._SIZE )
-
+ 
         # Getting position of lines to be drawn
         self._h_line_start = get_relative_coords( relative_surface = self._surface, relative_coords = self._h_line_start )
         self._h_line_end = get_relative_coords( relative_surface = self._surface, relative_coords = self._h_line_end )
@@ -48,14 +100,24 @@ class DepictBox:
         pass
 
     def _render_lines( self ):
+
+        # Drawing action kept seperatly in a function to ease reading
+        # Drawing the horizontal and vertical dividers
         pygame.draw.line( surface= self._surface, color= self._h_line_color, start_pos= self._h_line_start, end_pos= self._h_line_end, width=self._h_line_width )
         pygame.draw.line( surface= self._surface, color= self._v_line_color, start_pos= self._v_line_start, end_pos= self._v_line_end, width= self._v_line_width )
     
     def _render_self( self ):
         self._surface.fill( color=self._color )
         self._render_lines()
-        self._blit_screen.blit( source = self._surface, dest = self._rect ) 
+        # self._BeerLine._blit_surface = self._surface
+        
+       
     
     # Function will call all renders, including self, BeerLine, Formula and Zi's
     def render( self ):
+        
+        # print(self._surface is None)
         self._render_self()
+        self._BeerLine.render()
+        self._blit_screen.blit( source = self._surface, dest = self._rect ) 
+        
