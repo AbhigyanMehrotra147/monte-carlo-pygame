@@ -1,6 +1,7 @@
 
 import pygame
 import pygame.image
+import common_methods as cm
 from matplotlib import pyplot as plt
 
 # for biffering the generated image
@@ -12,15 +13,19 @@ class RollingWindow( object ):
     For the rolling Zi-s on the left window
     """
 
-    def __init__( self, *, surface_size: tuple, surface_pos: tuple, fps: int ):
+    # surface_pos here is only a relative argument containing positive fractions below 1.
+    def __init__( self, *, surface_size: tuple, surface_pos: tuple, blit_surface: pygame.Surface):
 
         # worth mentioning here that the self._height has no understanding of self._num_zi below
         # neither does the Zi image generator
         # so the value of the window need to be aptly, of course emperically passed, for num_zi images that the image generator gives of whatever size
-        (self._width, self._height) = surface_size
-        self._POS = surface_pos
+        
+        # Making the surface in which zi will be blit
+        self._blit_surface = blit_surface
+
+        self._width, self._height = cm.get_relative_size( relative_surface= self._blit_surface, relative_size= surface_size )
+        self._surface_pos = cm.get_relative_coords( relative_surface= self._blit_surface, relative_coords= surface_pos ) 
         # should actually be derived from parent class
-        self._FPS = fps
 
         # will be passed into update from the BeerWindow main class, the current i in Zi
         self._cur_index = 0
@@ -32,10 +37,11 @@ class RollingWindow( object ):
         self._buf_index = self._cur_index
 
         # max number of Zis at once, vertically  
-        self._num_zi = 4
+        self._num_zi = 5
 
         # holds the current surface
         self._cur_zi_surf = pygame.Surface( ( self._width, self._height ) ).convert_alpha()
+        self._RECT = self._cur_zi_surf.get_rect()
 
         # the y-scroll-off of the current surface
         self._y_scroll_off = 0
@@ -43,10 +49,12 @@ class RollingWindow( object ):
         # file name/location
         self._file_latex = 'zi.png'
 
+        self._FPS = 10
+        self._clock = pygame.time.Clock()
         # image buffer,
         # self._img_buf = io.BytesIO()
 
-    def _return_z( self, *, sub_i: str, file: str = 'zi.png', h_s: bool = False, bool_axes: bool = False, font_size: int = 20, pos: tuple = ( 0.25, 0.4 ), fig_size: tuple = ( 2, 1 ) ):
+    def _return_z( self, *, sub_i: str, file: str = 'zi.png', h_s: bool = False, bool_axes: bool = False, font_size: int = 20, pos: tuple = ( 0, 0.4 ), fig_size: tuple = ( 2, 1 ) ):
         """
         Saves the current figure in the IO buffer as png, not quite, changed so that saves image
         """
@@ -74,17 +82,19 @@ class RollingWindow( object ):
 
         return None
 
-    def update( self, delta_T ):
-        # updates/creates the new image  
+    def update( self ):
+        # updates/creates the new image 
+        delta_T = self._clock.tick_busy_loop( self._FPS )/1000  
         self._return_z( sub_i=self._cur_index, file=self._file_latex )
 
         # increases the list index, this later on needs to be handled by parent function, this attribute should be derived from the parent  
-        self._buf_index += ( 2.1 ) * delta_T  # somehow this works, please do not ask how : (), the hardcoded 2, oof!!
+        self._buf_index += ( 2 ) * delta_T  # somehow this works, please do not ask how : (), the hardcoded 2, oof!!
         self._cur_index = int( self._buf_index )
 
         self._y_scroll_off -= ( self._height / self._num_zi ) * delta_T
+        print( "hello", self._y_scroll_off )
 
-    def render( self, screen: pygame.Surface ):
+    def render( self ):
         # converting the PIL buffer to a pygame surface
         # I am assuming this would be faster then loading the image in every frame
         # img = Image.frombuffer( "L", ( self._width, self._height ), self._img_buf.tostring(), "raw", "L", 0, 1  )
@@ -103,8 +113,7 @@ class RollingWindow( object ):
             self._y_scroll_off = 0
 
             image = pygame.image.load( self._file_latex ).convert_alpha()
-            
-            image.set_colorkey( ( (255,255,255) ) )
+
             # this loading makes things slow, I tried doing buffers without success
             self._cur_zi_surf.blit( image, ( 0, self._height * ( self._num_zi - 1 ) / self._num_zi ) )#  0 + ( self._num_zi - 1 ) * self._height / self._num_zi ) )
 
@@ -113,12 +122,14 @@ class RollingWindow( object ):
         else:
             print( 'shifting ', self._y_scroll_off )
             # the y_scroll off increases every frame in update by height / delta_T
-            # the non-visible part of the image is also stored till the screen runs
+            # the non-visible part of the image is also stored till the self._blit_surface runs
             # self._cur_zi_surf.blit( self._cur_zi_surf, ( 0, self._height / self._num_zi + self._y_scroll_off ), ( 0, self._height / self._num_zi, self._width, self._height * ( self._num_zi - 1 ) / self._num_zi ) )
 
             # self._cur_zi_surf.fill( ( 0, 0, 0, 0 ) )
             self._cur_zi_surf.blit( self._cur_zi_surf, ( 0, 0 ), ( 0, -1 * self._y_scroll_off, self._width, self._height + self._y_scroll_off ) )
-
-        # screen.blit( self._cur_zi_surf, ( 0, 0 ), self._RECT )
-        screen.blit( self._cur_zi_surf, ( 0, 0 ) )
+        
+        self._cur_zi_surf = pygame.transform.scale( surface= self._cur_zi_surf,size= (self._height,self._width) )
+        self._cur_zi_surf.set_colorkey( ( (255,255,255) ) )
+        # self._blit_surface.blit( self._cur_zi_surf, ( 0, 0 ), self._RECT )
+        self._blit_surface.blit( self._cur_zi_surf, self._surface_pos )
 

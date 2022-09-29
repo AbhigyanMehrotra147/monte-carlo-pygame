@@ -2,6 +2,7 @@ import pygame
 
 list_bool = []
 list_index = 0
+list_index_zi = 0
 
 def get_relative_coords( relative_surface: pygame.Surface, relative_coords: tuple ):
     surf_size = relative_surface.get_size()
@@ -9,6 +10,7 @@ def get_relative_coords( relative_surface: pygame.Surface, relative_coords: tupl
 
 def get_relative_size( relative_surface: pygame.Surface, relative_size: tuple):
     surf_size = relative_surface.get_size()
+    print( surf_size )
     return ( int(surf_size[0]*relative_size[0]), int(surf_size[1]*relative_size[1]) )
 
 # Relative scaling for the case in which aspect reatio has to preserved 
@@ -37,6 +39,14 @@ def _update_index( number_of_dots ):
         list_index += 1
     else:
         list_index = 0
+
+def _update_index_zi( number_of_zi ):
+    
+    global list_index_zi
+    if (list_index_zi < (len(list_bool) - number_of_zi*2 - 1)):
+        list_index_zi += 1
+    else:
+        list_index_zi = 0
 
 # Method changes coordinates so that an smaller surface is centered on the coordinates on the blitted surface
 def adjust_to_center_surface( coordinates: tuple, surface: pygame.Surface):

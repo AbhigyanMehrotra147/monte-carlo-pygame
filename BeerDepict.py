@@ -35,8 +35,19 @@ smiley_address = "./assets/smiley/"
 
 monte_file_path = "temp.txt"
 
+beer_zi_surface_pos = (0,0)
+beer_zi_surface = (0.5,0.5)
+
+beer_zi_color = (125,20,78)
+
+beer_zi_pace = 5
+beer_number_of_zi = 4
+
+
+
 import pygame
 from BeerLine import BeerLine
+from Beer_Zi import Beer_Zi
 from common_methods import get_relative_coords
 
 class DepictBox:
@@ -67,7 +78,7 @@ class DepictBox:
         self._v_line_color = v_line_color
 
         self._BeerLine = None
-
+        self._RollingWindow = None
 
     def create( self ):
         # Creating the surface for the self
@@ -82,7 +93,12 @@ class DepictBox:
                             sad_popsickle_length= sad_popsicle_length, sad_smiley_pos= sad_smiley_pos, sad_smiley_size= sad_smiley_size,\
                                 happy_smiley_pos= happy_smiley_pos, happy_smiley_size= happy_smiley_size, smiley_address= smiley_address,\
                                      monte_file_path= monte_file_path )
+        
+        self._BeerZi = Beer_Zi( blit_surface= self._surface, SIZE= beer_zi_surface, POS= beer_zi_surface_pos, COLOR= beer_zi_color,\
+             zi_pace= beer_zi_pace, number_of_zi= beer_number_of_zi, monte_file_path= monte_file_path )
+
         self._BeerLine.create()
+        self._BeerZi.create()
 
     def _create_self( self ):
         # Setting color key so that the background gets removed gets removed. 
@@ -97,7 +113,7 @@ class DepictBox:
         self._v_line_end = get_relative_coords( relative_surface = self._surface, relative_coords = self._v_line_end )
     
     def _update( self ):
-        pass
+        self._RollingWindow.update(  )
 
     def _render_lines( self ):
 
@@ -115,9 +131,11 @@ class DepictBox:
     
     # Function will call all renders, including self, BeerLine, Formula and Zi's
     def render( self ):
-        
-        # print(self._surface is None)
+    
         self._render_self()
         self._BeerLine.render()
+        self._BeerZi.render()
         self._blit_screen.blit( source = self._surface, dest = self._rect ) 
+
+        
         

@@ -1,4 +1,3 @@
-
 import pygame
 
 from RollingWindow import RollingWindow
@@ -6,7 +5,7 @@ from RollingWindow import RollingWindow
 if( __name__ == "__main__" ):
     pygame.init()
 
-    WIDTH, HEIGHT = 200, 300
+    WIDTH, HEIGHT = 200,300
 
     screen = pygame.display.set_mode( size = ( WIDTH, HEIGHT ) )
     clock = pygame.time.Clock()
@@ -23,9 +22,8 @@ if( __name__ == "__main__" ):
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill( ( 0, 0, 0, 0 ) )
+        screen.fill( ( 0, 0, 200 ) )
         a_rolling_window.update( delta_T=deltaTime )
         a_rolling_window.render( screen )
 
         pygame.display.update()
-
