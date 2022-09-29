@@ -54,7 +54,7 @@ class Game( object ):
 
             self._LawLarge = LawLarge(pos_x = self._WIDTH*0.05, pos_y = self._HEIGHT*0.01, width = 500, height = 300, color_rect = ( 100,100,140 ), \
                 color_line = (255,255,255,255), monte_file_path = "temp.txt", formula_image_path = "formula.png", number_of_dots = 6, smiley_address = "./assets/smiley/" )
-            
+
             self._LawLarge.initialize()
             # self._ash = Person( cur_x = self._WIDTH/(3/2), cur_y= self._HEIGHT/(3/2) , image_path = "./boy.png",  json_path= "./boy.json", NUM_FRAMES=5, sprite_index=0, x_name="x", y_name = "y", width_name = "width", height_name = "height" )
 
@@ -116,8 +116,8 @@ class Game( object ):
         self._clean()
         print( 'Exited game instance!' )
 
-
     def _clean( self ):
         # needs to delete / free elements
         # quits pygame sub-systems
         pygame.quit()
+
