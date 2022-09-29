@@ -12,13 +12,13 @@ class RollingWindow( object ):
     For the rolling Zi-s on the left window
     """
 
-    def __init__( self, *, window_size: tuple[ int, int ], fps: int ):
+    def __init__( self, *, surface_size: tuple, surface_pos: tuple, fps: int ):
 
         # worth mentioning here that the self._height has no understanding of self._num_zi below
         # neither does the Zi image generator
         # so the value of the window need to be aptly, of course emperically passed, for num_zi images that the image generator gives of whatever size
-        self._width, self._height = window_size
-
+        (self._width, self._height) = surface_size
+        self._POS = surface_pos
         # should actually be derived from parent class
         self._FPS = fps
 
@@ -36,15 +36,12 @@ class RollingWindow( object ):
 
         # holds the current surface
         self._cur_zi_surf = pygame.Surface( ( self._width, self._height ) ).convert_alpha()
-        self._RECT = self._cur_zi_surf.get_rect()
 
         # the y-scroll-off of the current surface
         self._y_scroll_off = 0
 
         # file name/location
         self._file_latex = 'zi.png'
-
-        self._speed = 2
 
         # image buffer,
         # self._img_buf = io.BytesIO()
@@ -87,7 +84,7 @@ class RollingWindow( object ):
 
         self._y_scroll_off -= ( self._height / self._num_zi ) * delta_T
 
-    def render( self, screen ):
+    def render( self, screen: pygame.Surface ):
         # converting the PIL buffer to a pygame surface
         # I am assuming this would be faster then loading the image in every frame
         # img = Image.frombuffer( "L", ( self._width, self._height ), self._img_buf.tostring(), "raw", "L", 0, 1  )
