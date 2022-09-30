@@ -24,7 +24,6 @@ class BeerFormula:
         self._POS = cm.get_relative_coords( relative_surface= self._blit_surface, relative_coords= self._POS )
         self._SIZE = cm.get_relative_size( relative_surface= self._blit_surface, relative_size= self._SIZE )
         self._surface = pygame.Surface( size= self._SIZE )
-        self._surface.set_colorkey( self._COLOR )
         self._rect = pygame.Rect( self._POS, self._SIZE )
 
 
