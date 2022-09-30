@@ -90,6 +90,7 @@ class BeerLine:
         self._dot_gaps = int(self._line_length/self._number_of_dots)
         self._first_dot_position = self._dot_gaps
 
+        self._dot_pace = self._dot_gaps/10
         # Getting Actual Relative radius for dots
         # self._sad_dot_size = cm.get_relative_size( relative_surface= self._surface, relative_size= self._sad_dot_size )
         # self._happy_dot_size = cm.get_relative_size( relative_surface= self._surface, relative_size= self._happy_dot_size )

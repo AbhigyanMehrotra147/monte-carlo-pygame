@@ -41,7 +41,7 @@ class Poison():
             to = self._cur_index
 
         print( 'returning sliced copy of private variable: self._beer_list!')
-        return 0
+        return self._beer_list[ from_index: ]
 
 if __name__ == "__main__":
 

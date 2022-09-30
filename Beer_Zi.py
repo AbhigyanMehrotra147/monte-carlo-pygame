@@ -51,12 +51,14 @@ class Beer_Zi:
         self._surface.set_colorkey( self._COLOR )
         self._rect = pygame.Rect( self._POS, self._SIZE)
 
+        
+
     def _create_zi( self ):
         
         self._zi_y_pos = (self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
         self._zi_first_blit = self._zi_y_pos
         temp_size = None
-        for i in range( self._number_of_zi + 1):
+        for i in range( self._number_of_zi ):
 
             self._return_z( sub_i = cm.list_bool[i], file= self._zi_path, h_s= cm.list_bool[cm.list_index_zi] )
 
@@ -68,8 +70,8 @@ class Beer_Zi:
     
         self._zi_size = ( temp_size[0], self._SIZE[1]/self._number_of_zi )
 
-        print( self._zi_size )
-    
+        self._zi_pace = self._zi_size[1]*self._zi_pace
+
     def create( self ):
         self._create_self()
         self._create_zi()
@@ -125,13 +127,16 @@ class Beer_Zi:
         return None
 
     def _render_zi( self ):
-        i = self._number_of_zi - 1
-        for y_coord in range( int( self._zi_y_pos + self._zi_size[1] ), int( -self._zi_size[1] ) , int( -self._zi_size[1] ) ):
-            self._surface.blit( source= self._current_zi_array[i], dest= (0,y_coord) )
-            i -= 1
-        
         
         self._update_zi()
+        i = self._number_of_zi - 1
+        for y_coord in range( int( self._zi_y_pos), int( -self._zi_size[1] ) , int( -self._zi_size[1] ) ):
+            self._surface.blit( source= self._current_zi_array[i], dest= (0,y_coord) )
+            i -= 1
+            print(i)
+        
+        
+        
 
     def _render_self( self ):
         self._surface.fill( self._COLOR )

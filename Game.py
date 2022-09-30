@@ -111,7 +111,7 @@ class Game( object ):
                 self._handle_events()
                 self._update()
                 self._render()
-                pygame.time.delay(100)
+                pygame.time.delay(10)
         self._clean()
         print( 'Exited game instance!' )
 
