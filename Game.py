@@ -1,4 +1,3 @@
-
 import pygame
 from time import time
 import math
@@ -15,7 +14,7 @@ class Game( object ):
         self._BCK_COL = [ 255, 2, 0 ]
         self._NUM_IMAGES = 5
         self._SURFACES = []
-        self._FPS = 100
+        self._FPS = 15
 
         self._running = True
         self._window = None
@@ -112,7 +111,7 @@ class Game( object ):
                 self._handle_events()
                 self._update()
                 self._render()
-                # pygame.time.delay(1)
+                pygame.time.delay(100)
         self._clean()
         print( 'Exited game instance!' )
 

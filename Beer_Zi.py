@@ -140,4 +140,4 @@ class Beer_Zi:
     def render( self ):
         self._render_self()
         self._render_zi()
-        self._blit_surface.blit( source = self._surface, dest= self._rect)
+        self._blit_surface.blit( source = self._surface, dest= self._rect )
