@@ -126,7 +126,7 @@ class Beer_Zi:
 
     def _render_zi( self ):
         i = self._number_of_zi - 1
-        for y_coord in range( int( self._zi_y_pos + self._zi_size[1] ), int( -self._zi_size[1] ) , int( -self._zi_size[1] ) ):
+        for y_coord in range( int( self._zi_y_pos ), int( -self._zi_size[1] ) , int( -self._zi_size[1] ) ):
             self._surface.blit( source= self._current_zi_array[i], dest= (0,y_coord) )
             i -= 1
         
