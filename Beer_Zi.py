@@ -28,10 +28,12 @@ class Beer_Zi:
         self._number_of_zi = number_of_zi
         self._zi_pace = zi_pace
         self._zi_size = None
-        self._zi_pos = 0
+        self._zi_y_pos = 0
         self._zi_path = "zi.png"
         self._zi_color = (255,255,255)
-        # Array storing the current images of zi's
+        # zi_first_blit is where the first image of zi will be blit in each iteration on the screen
+        self._zi_first_blit = None
+        # Array storing the current imagetemp_image.set_colorkey( self._zi_color )s of zi's
         
         self._current_zi_array = []
         # Initializing the list of indices
@@ -51,19 +53,22 @@ class Beer_Zi:
 
     def _create_zi( self ):
         
-        self._zi_pos = (self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
+        self._zi_y_pos = (self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
+        self._zi_first_blit = self._zi_y_pos
         temp_size = None
-        for i in range( self._number_of_zi ):
+        for i in range( self._number_of_zi + 2):
 
             self._return_z( sub_i = cm.list_bool[i], file= self._zi_path, h_s= cm.list_bool[cm.list_index_zi] )
 
             temp_image = pygame.image.load( self._zi_path )
             temp_size = temp_image.get_size()
-            temp_image = pygame.transform.scale( surface= self._surface , size= ( temp_size[0], self._SIZE[1]/self._number_of_zi  )  )
             temp_image.set_colorkey( self._zi_color )
+            temp_image = pygame.transform.scale( surface= self._surface , size= ( temp_size[0], self._SIZE[1]/self._number_of_zi  )  )
             self._current_zi_array.append( temp_image )
     
         self._zi_size = ( temp_size[0], self._SIZE[1]/self._number_of_zi )
+
+        print( self._zi_size )
     
     def create( self ):
         self._create_self()
@@ -76,15 +81,15 @@ class Beer_Zi:
         temp_image = pygame.transform.scale( surface= temp_image, size= self._zi_size )
         temp_image.set_colorkey( self._zi_color )
         self._current_zi_array.append( temp_image )
+        cm._update_index_zi( number_of_zi= self._number_of_zi)
 
     def _update_zi( self ):
 
-        cm._update_index_zi( number_of_zi= self._number_of_zi)
-        if self._zi_pos > 0:
-            self._zi_pos -= self._zi_pace
+        if self._zi_y_pos > self._zi_first_blit - self._zi_size[1] :
+            self._zi_y_pos -= self._zi_pace
         else:
-            self._zi_pos = (self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
-
+            self._zi_y_pos = (self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
+            self._shift_zi()
     
     def _return_z( self, sub_i: str, file: str = 'zi.png', h_s: bool = False,  font_size: int = 15, pos: tuple = ( 0.25, 0.4 ), fig_size: tuple = ( 1, 1 ) ):
         """
@@ -116,11 +121,11 @@ class Beer_Zi:
 
     def _render_zi( self ):
         i = self._number_of_zi - 1
-        for y_coord in range( int( self._zi_pos ), int( self._SIZE[1] ) , int( self._zi_size[1] ) ):
+        for y_coord in range( int( self._zi_y_pos + self._zi_size[1] ), int( -self._zi_size[1] ) , int( -self._zi_size[1] ) ):
             self._surface.blit( source= self._current_zi_array[i], dest= (0,y_coord) )
             i -= 1
         
-        self._shift_zi()
+        
         self._update_zi()
 
     def _render_self( self ):
