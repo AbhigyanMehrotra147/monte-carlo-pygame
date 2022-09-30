@@ -15,73 +15,64 @@ class Poison():
         # the current running index / day
         self._cur_index = 0
 
+        # list that contains the 0s and 1s
+        self._beer_list = np.array( [], dtype=int )
+
     def update( self ):
+        # a new day, a fresh calculation
+        n = np.random.poisson( self._Lambda * self._t )                                             # using numpy to generate random poisson val
 
-        n = np.random.poisson( self._Lambda * self._t )                                     # using numpy to generate random poisson val
-
-        coins = []                                                                          # initialising with empty array
+        coins = []                                                                                  # initialising with empty array
 
         if n != 0:
 
-            coins = np.zeros((n, 1))                                                        # making it a numpy array
+            coins = np.zeros((n, 1))                                                                # making it a numpy array
 
             for j in range(0, n):
 
-                U = random.uniform(0, 1)                                                    # random values between 0 & 1
+                U = random.uniform(0, 1)                                                            # random values between 0 & 1
 
                 coins[ j, 0 ] = ( U <= 2 / 5 ) * 5 + ( 2 / 5 < U <= 4 / 5 ) * 10 + ( U > 4 / 5 ) * 20
                 # updating the (j, 0) entry of the array
-
-        self._beer_list[ self._cur_index, 0 ] = int( np.sum(coins) >= self._beer_price )    # the sum of coins
+        # print( self._cur_index )
+        # appending the new beer got or not got inside the beer list
+        self._beer_list = np.append( self._beer_list, int( np.sum( coins ) >= self._beer_price ) )  # the sum of coins vs the price, happy sad
 
         self._cur_index += 1
-    
-    def get_list( from_index: int = 0, to_index: int = None ):
-        if( to is None ):
-            to = self._cur_index
 
-        print( 'returning sliced copy of private variable: self._beer_list!')
-        return 0
+    def get_list( self, from_index: int = 0, to_index: int = None ):
+        if( to_index is None ):
+            to_index = self._cur_index
 
-if __name__ == "__main__":
+        print( 'accessing sliced copy of private variable: self._beer_list!, from index, ', from_index, 'to ', to_index )
 
-    main()
+        # an effective way to make sure no changes to inner things
+        return copy.deepcopy( self._beer_list[ from_index : to_index + 1 ] )
 
-def monte_carlo(t: int, Lambda: int, N: int, beer_price: int) -> tuple:
+    def get_cur_index( self ):
+        return copy.deepcopy( self._cur_index )
 
-    beer = np.zeros((N, 1))                                                 # Initialising an empty matrix of zeros
-
-    for i in range(0, N):
-
-        n = np.random.poisson( Lambda * t )                                 # using numpy to generate random poisson val
-
-        coins = []                                                          # initialising with empty array
-
-        if n != 0:
-
-            coins = np.zeros((n, 1))                                        # making it a numpy array
-
-            for j in range(0, n):
-
-                U = random.uniform(0, 1)                                    # random values between 0 & 1
-
-                coins[ j, 0 ] = ( U <= 2 / 5 ) * 5 + ( 2 / 5 < U <= 4 / 5 ) * 10 + ( U > 4 / 5 ) * 20
-                # updating the (j, 0) entry of the array
-
-        beer[ i, 0 ] = int( np.sum(coins) >= beer_price )                          # the sum of coins
-
-    l_hat = np.mean(beer)                                                   # mean number of times, is able to buy beer
-    reErr_hat = np.std(beer) / (math.sqrt(N) * l_hat)                       # the relative error of mean
-
-    return l_hat
-
+    def get_mean_array( self ):
+        return self._beer_list.mean()
 
 def main():
+
     t = 3
     Lambda = 5
     N = 10 ** 6
-    beer_price = 350
+    beer_price = 120
 
-    l_hat, relErr_hat = monte_carlo(t, Lambda, N, beer_price)
-    print("l_hat = ", l_hat)
-    print("relErr_hat = ", relErr_hat)
+    pois = Poison( t=t, Lambda=Lambda, N=N, beer_price=beer_price )
+
+    till = 10**3
+
+    while( pois.get_cur_index() < till ):
+        pois.update()
+        # print( pois.get_list() )
+
+        print( pois.get_mean_array() )
+
+if __name__ == "__main__":
+    main()
+
+
