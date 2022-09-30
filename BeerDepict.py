@@ -36,12 +36,12 @@ smiley_address = "./assets/smiley/"
 monte_file_path = "temp.txt"
 
 beer_zi_surface_pos = (0,0)
-beer_zi_surface = (0.5,0.5)
+beer_zi_surface = (0.8,0.8)
 
 beer_zi_color = (125,20,78)
 
-beer_zi_pace = 5
-beer_number_of_zi = 4
+beer_zi_pace = 10
+beer_number_of_zi = 3
 
 
 

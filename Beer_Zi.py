@@ -63,7 +63,7 @@ class Beer_Zi:
             temp_image.set_colorkey( self._zi_color )
             self._current_zi_array.append( temp_image )
     
-        self._zi_size = temp_size
+        self._zi_size = ( temp_size[0], self._SIZE[1]/self._number_of_zi )
     
     def create( self ):
         self._create_self()
@@ -121,7 +121,6 @@ class Beer_Zi:
 
         i = self._number_of_zi - 1
         for y_coord in range( int( self._zi_pos ), int( self._SIZE[1] ) , int( self._zi_size[1] ) ):
-            print(y_coord)
             self._surface.blit( source= self._current_zi_array[i], dest= (0,y_coord) )
             i -= 1
 
