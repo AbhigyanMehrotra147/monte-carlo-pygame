@@ -104,7 +104,7 @@ class DepictBox:
 
     def _create_self( self ):
         # Setting color key so that the background gets removed gets removed. 
-        self._surface = pygame.Surface( size = self._SIZE )
+        self._surface = pygame.Surface( size = self._SIZE ).convert_alpha()
         self._surface.set_colorkey (self._color)
         self._rect = pygame.Rect( self._POS, self._SIZE )
  
@@ -137,7 +137,8 @@ class DepictBox:
         self._render_self()
         self._BeerZi.render()
         self._BeerLine.render()
-        self._blit_screen.blit( source = self._surface, dest = self._rect ) 
 
+        # pygame.image.save( self._surfaces, "test.png" )
+        self._blit_screen.blit( source = self._surface, dest = self._rect ) 
         
         

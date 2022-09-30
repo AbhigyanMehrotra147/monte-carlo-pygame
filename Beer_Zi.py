@@ -56,7 +56,7 @@ class Beer_Zi:
         self._zi_y_pos = (self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
         self._zi_first_blit = self._zi_y_pos
         temp_size = None
-        for i in range( self._number_of_zi + 2):
+        for i in range( self._number_of_zi + 1):
 
             self._return_z( sub_i = cm.list_bool[i], file= self._zi_path, h_s= cm.list_bool[cm.list_index_zi] )
 
@@ -88,7 +88,7 @@ class Beer_Zi:
         if self._zi_y_pos > self._zi_first_blit - self._zi_size[1] :
             self._zi_y_pos -= self._zi_pace
         else:
-            self._zi_y_pos = (self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
+            self._zi_y_pos = int(self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
             self._shift_zi()
     
     def _return_z( self, sub_i: str, file: str = 'zi.png', h_s: bool = False,  font_size: int = 15, pos: tuple = ( 0.25, 0.4 ), fig_size: tuple = ( 1, 1 ) ):
@@ -112,10 +112,15 @@ class Beer_Zi:
 
         # to show the file  
         # plt.show()
+        
 
         # /Users/pogovishal/Documents/tmp/RollingWindow.py:32: RuntimeWarning: More than 20 figures have been opened. 
         # Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory.
+        
         plt.close( 'all' )
+
+        # Performing convolution
+        cm.make_mono()
 
         return None
 

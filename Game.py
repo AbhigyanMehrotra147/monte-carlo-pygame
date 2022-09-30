@@ -7,8 +7,8 @@ class Game( object ):
 
     def __init__( self ):
         self._TITLE = " Monte Carlo Beer Simulation "
-        self._WIDTH = 1600
-        self._HEIGHT = 900
+        self._WIDTH =  1980
+        self._HEIGHT = 1080
         self._FLAGS = pygame.RESIZABLE
 
         self._SIZE = ( self._WIDTH, self._HEIGHT )

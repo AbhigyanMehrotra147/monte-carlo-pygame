@@ -1,7 +1,7 @@
 
 from PIL import Image
 
-def make_mono( file: str = 'zi.png', thresh = 200, reverse: bool = False ):
+def make_mono( file: str = 'zi.png', thresh = 230, reverse: bool = False ):
     # image_file = Image.open( file ) # open colour image
     # image_file = image_file.convert('1') # convert image to black and white
     # image_file.save( 'zi.png' )

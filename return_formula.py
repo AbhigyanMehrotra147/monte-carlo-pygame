@@ -1,4 +1,5 @@
 
+from monochrome import make_mono
 import matplotlib.pyplot as plt
 
 def return_formula( index: str = 'i', N: str = r'10^3', avg: str = '0.73', file: str = 'formula.png', convolve: bool = True, font_size: int = 20, pos : tuple = ( 0.1, 0.4 ), fig_size: tuple = ( 3, 1 ) ):
@@ -20,6 +21,8 @@ def return_formula( index: str = 'i', N: str = r'10^3', avg: str = '0.73', file:
 
     plt.close( 'all' )
 
+    if( convolve ):
+        make_mono( file= file )
 
 if( __name__ == "__main__" ):
-    return_formula()
+    return_formula( )

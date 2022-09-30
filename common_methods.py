@@ -1,4 +1,5 @@
 import pygame
+from PIL import Image
 
 list_bool = []
 list_index = 0
@@ -56,3 +57,20 @@ def adjust_to_center_surface( coordinates: tuple, surface: pygame.Surface):
 # Method centers drawn objects
 def adjust_to_center_draw( coordinates: tuple, draw_size: tuple):
     return (( coordinates[0]- (draw_size[0] * 0.5)), ( coordinates[1] - (draw_size[1] * 0.5) ) )
+
+
+# Performing convolution
+
+
+
+def make_mono( file: str = 'zi.png', thresh = 230, reverse: bool = False ):
+    # image_file = Image.open( file ) # open colour image
+    # image_file = image_file.convert('1') # convert image to black and white
+    # image_file.save( 'zi.png' )
+
+    # white if greater than threshold
+    image_file = Image.open( file )
+    filter = lambda x : 255 * int( not( reverse  ) ) if x > thresh else 0
+    image_file = image_file.convert( 'L' ).point( filter, mode='1' )
+    image_file.save( file )
+    print( 'Saved the converted image' )
