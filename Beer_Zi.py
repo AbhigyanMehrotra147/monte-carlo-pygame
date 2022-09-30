@@ -84,6 +84,7 @@ class Beer_Zi:
             self._zi_pos -= self._zi_pace
         else:
             self._zi_pos = (self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
+            self._shift_zi()
 
     
     def _return_z( self, sub_i: str, file: str = 'zi.png', h_s: bool = False,  font_size: int = 15, pos: tuple = ( 0.25, 0.4 ), fig_size: tuple = ( 1, 1 ) ):
@@ -115,20 +116,21 @@ class Beer_Zi:
         return None
 
     def _render_zi( self ):
+
+        self._update_zi()
+
         i = self._number_of_zi - 1
         for y_coord in range( int( self._zi_pos ), int( self._SIZE[1] ) , int( self._zi_size[1] ) ):
             print(y_coord)
             self._surface.blit( source= self._current_zi_array[i], dest= (0,y_coord) )
             i -= 1
-        
-        self._shift_zi()
-        self._update_zi()
 
     def _render_self( self ):
-        self._surface.fill( self._COLOR )
-        
+        # self._surface.fill( self._COLOR )
+        pass
 
     def render( self ):
         self._render_self()
         self._render_zi()
         self._blit_surface.blit( source = self._surface, dest= self._rect)
+
