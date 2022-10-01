@@ -4,5 +4,6 @@
 *.o
 *.out
 *.pyc
-*.png
+formula.png
+zi.png
 
