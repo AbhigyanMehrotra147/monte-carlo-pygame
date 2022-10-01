@@ -58,9 +58,7 @@ beer_number_of_zi = 3
 beer_formula_size = (0.5,0.7)
 beer_formula_pos = (0.3,0.01)
 
-beer_formula_color = (0,0,0)
-
-
+beer_formula_color = (255,255,255)
 
 class DepictBox:
 
@@ -111,7 +109,7 @@ class DepictBox:
 
         self._BeerFormula = BeerFormula( blit_surface= self._surface, SIZE= beer_formula_size, POS= beer_formula_pos,\
         COLOR= beer_formula_color )
-        
+
         self._BeerLine.create()
         self._BeerZi.create()
         self._BeerFormula.create()
@@ -157,6 +155,6 @@ class DepictBox:
         self._BeerZi.render()
         self._BeerFormula.render()
         self._BeerLine.render()
-        
+
         # pygame.image.save( self._surfaces, "test.png" )
         self._blit_screen.blit(source=self._surface, dest=self._rect)
