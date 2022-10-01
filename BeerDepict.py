@@ -157,7 +157,7 @@ class DepictBox:
 
     def render( self, Poison ):
         self._render_self()
-        self._BeerZi.render( Poisson= Poison)
+        self._BeerZi.render( Poison= Poison)
         self._BeerFormula.render()
         
         self._BeerLine.render( Poison= Poison )
