@@ -1,3 +1,4 @@
+
 from numpy import source
 import pygame
 import common_methods as cm
@@ -73,6 +74,8 @@ class Beer_Zi:
 
         print( self._zi_size )
 
+        self._zi_pace = self._zi_size[1]*self._zi_pace
+
     def create( self ):
         self._create_self()
         self._create_zi()
@@ -93,7 +96,7 @@ class Beer_Zi:
         else:
             self._zi_y_pos = int(self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
             self._shift_zi()
-    
+
     def _return_z( self, sub_i: str, file: str = 'zi.png', h_s: bool = False,  font_size: int = 15, pos: tuple = ( 0.25, 0.4 ), fig_size: tuple = ( 1, 1 ) ):
         """
         Saves the current figure in the IO buffer as png, not quite, changed so that saves image

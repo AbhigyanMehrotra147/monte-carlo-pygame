@@ -1,6 +1,21 @@
 import pygame
 from time import time
 import math
+from Poisson import Poison
+
+Poisson_t = 3
+Poisson_lambda = 5
+N = 10 ** 6
+beer_price = 120
+
+# Depict box 
+depict_box_v_line_width = 5
+depict_box_v_line_coords = [(0.5,0),(0.5,0.5)]
+depict_box_v_line_color = (100,100,100)
+
+depict_box_h_line_width = 5
+
+update_index_pace = 10
 
 class Game( object ):
 
@@ -15,6 +30,9 @@ class Game( object ):
         self._NUM_IMAGES = 5
         self._SURFACES = []
         self._FPS = 15
+        
+        self._running_timer = 0
+
 
         self._running = True
         self._window = None
@@ -45,6 +63,7 @@ class Game( object ):
             from Background import Background
             from LawLarge import LawLarge
             from BeerDepict import DepictBox
+            
             self._window = pygame.display.set_mode( size= self._SIZE, flags= self._FLAGS, depth= 1, display= 0, vsync= 0 )
             pygame.display.set_caption( self._TITLE )
             self._clock = pygame.time.Clock()
@@ -54,11 +73,14 @@ class Game( object ):
             self._LawLarge = LawLarge(pos_x = self._WIDTH*0.05, pos_y = self._HEIGHT*0.01, width = 500, height = 300, color_rect = ( 100,100,140 ), \
                 color_line = (255,255,255,255), monte_file_path = "temp.txt", formula_image_path = "formula.png", number_of_dots = 6, smiley_address = "./assets/smiley/" )
 
-            self._LawLarge.initialize()
             # self._ash = Person( cur_x = self._WIDTH/(3/2), cur_y= self._HEIGHT/(3/2) , image_path = "./boy.png",  json_path= "./boy.json", NUM_FRAMES=5, sprite_index=0, x_name="x", y_name = "y", width_name = "width", height_name = "height" )
 
             self._DepictBox = DepictBox( SIZE = (self._WIDTH*0.4,self._HEIGHT*0.3) ,POS = (self._WIDTH*0.01,self._HEIGHT*0.01),BORDER_RADIUS= 10, color=(100,100,100), blit_screen=self._screen, \
-                 h_line_color= (100,100,100), h_line_coords=[(0,0.5),(1,0.5)], h_line_width= 5, v_line_color=(100,100,100), v_line_coords=[(0.5,0),(0.5,0.5)], v_line_width=5 )
+                 h_line_color= (100,100,100), h_line_coords=[(0,0.5),(1,0.5)], h_line_width= depict_box_h_line_width,\
+                     v_line_color= depict_box_v_line_color, v_line_coords= depict_box_v_line_coords, v_line_width= depict_box_v_line_width, update_index_pace = update_index_pace )
+            
+            self._Poison = Poison( t = Poisson_t, Lambda= Poisson_lambda, N=N, beer_price= beer_price  )
+            
             self._DepictBox.create()
             self._prev_time = time()
 
@@ -67,6 +89,13 @@ class Game( object ):
     def _update( self ):
 
         self._background.update()
+        
+        if self._running_timer < update_index_pace:
+            self._running_timer += 1
+        else:
+            self._Poison.update()
+            self._running_timer = 0
+        print(self._running_timer)
         # self._ash.move( screen = self._window, dx= -float( 10 * self._delta_T ), dy= -1)
 
     def _render( self ):
