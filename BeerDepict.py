@@ -21,8 +21,8 @@ happy_dot_size = 5
 sad_dot_color = (220, 100, 100)
 sad_dot_size = 5
 
-number_of_dots = 8
-dot_pace = 5
+number_of_dots = 3
+dot_pace = 0.2
 
 # Popsickkle dimensions are relative to beerline surface and not Beerdepict surface
 happy_popsickle_color = happy_dot_color
@@ -50,7 +50,7 @@ beer_zi_surface = (0.8, 0.8)
 
 beer_zi_color = (125, 20, 78)
 
-beer_zi_pace = 10
+beer_zi_pace = 0.2
 beer_number_of_zi = 3
 
 # BeerFormula
@@ -91,6 +91,8 @@ class DepictBox:
 
         self._BeerLine = None
         self._RollingWindow = None
+
+        # Pace at which N(index for monte array) will change
 
     def create(self):
         # Creating the surface for the self

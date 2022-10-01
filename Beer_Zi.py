@@ -68,7 +68,7 @@ class Beer_Zi:
     
         self._zi_size = ( temp_size[0], self._SIZE[1]/self._number_of_zi )
 
-        print( self._zi_size )
+        self._zi_pace = self._zi_size[1]*self._zi_pace
     
     def create( self ):
         self._create_self()
