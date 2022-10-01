@@ -6,7 +6,7 @@ from Poisson import Poison
 Poisson_t = 3
 Poisson_lambda = 5
 N = 10 ** 6
-beer_price = 120
+beer_price = 200
 
 # Depict box 
 depict_box_v_line_width = 5
@@ -80,7 +80,9 @@ class Game( object ):
                      v_line_color= depict_box_v_line_color, v_line_coords= depict_box_v_line_coords, v_line_width= depict_box_v_line_width, update_index_pace = update_index_pace )
             
             self._Poison = Poison( t = Poisson_t, Lambda= Poisson_lambda, N=N, beer_price= beer_price  )
-            
+            for i in range(100):
+                self._Poison.update()    
+
             self._DepictBox.create()
             self._prev_time = time()
 
@@ -95,7 +97,6 @@ class Game( object ):
         else:
             self._Poison.update()
             self._running_timer = 0
-        print(self._running_timer)
         # self._ash.move( screen = self._window, dx= -float( 10 * self._delta_T ), dy= -1)
 
     def _render( self ):
@@ -104,7 +105,8 @@ class Game( object ):
         # self._ash.render( self._window )
         # self._background.render_hue( self._screen )
         # self._LawLarge.render( screen = self._screen )
-        self._DepictBox.render()
+
+        self._DepictBox.render( Poison= self._Poison )
 
         # fps_text = pygame.font.SysFont( "impact", 50 ).render( str(cur_fps), 1, (0,0,0))
         # self._window.blit( fps_text, ( self._WIDTH / 2, 100) )

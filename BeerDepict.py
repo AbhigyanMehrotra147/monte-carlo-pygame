@@ -67,7 +67,9 @@ class DepictBox:
     # The capitalized arguments represent constant values only to assigned once
     # blit screen is the screen on which we will blit our surface
     # Line coordinates are always relative to the surface
-    def __init__(self, SIZE: tuple, POS: tuple, BORDER_RADIUS: float, color: tuple, blit_screen: pygame.Surface, h_line_color: tuple, h_line_coords: list, v_line_color: tuple, v_line_coords: list, h_line_width: float, v_line_width: float):
+    def __init__(self, SIZE: tuple, POS: tuple, BORDER_RADIUS: float, color: tuple, blit_screen: pygame.Surface,\
+         h_line_color: tuple, h_line_coords: list, v_line_color: tuple, v_line_coords: list, h_line_width: float, v_line_width: float, \
+            update_index_pace: int):
 
         self._SIZE = SIZE
         self._POS = POS
@@ -93,6 +95,7 @@ class DepictBox:
         self._RollingWindow = None
 
         # Pace at which N(index for monte array) will change
+        self._update_index_pace = update_index_pace
 
     def create(self):
         # Creating the surface for the self
@@ -102,14 +105,14 @@ class DepictBox:
         self._BeerLine = BeerLine(blit_surface=self._surface, SIZE=line_surface_size, POS=line_surface_coords,
                                   COLOR=self._color, line_coords=line_coords, line_color=line_color, line_width=line_width,
                                   sad_dot_colors=sad_dot_color, sad_dot_size=sad_dot_size, happy_dot_colors=happy_dot_color,
-                                  happy_dot_size=happy_dot_size, numer_of_dots=number_of_dots, dot_pace=dot_pace,
+                                  happy_dot_size=happy_dot_size, numer_of_dots=number_of_dots, dot_pace= 1/(self._update_index_pace),
                                   happy_popsickle_color=happy_popsickle_color, sad_popsickle_color=sad_popsickle_color, popsickle_width=popsickle_width, happy_popsickle_length=happy_popsickle_length,
                                   sad_popsickle_length=sad_popsicle_length, sad_smiley_pos=sad_smiley_pos, sad_smiley_size=sad_smiley_size,
                                   happy_smiley_pos=happy_smiley_pos, happy_smiley_size=happy_smiley_size, smiley_address=smiley_address,
                                   monte_file_path=monte_file_path)
 
         self._BeerZi = Beer_Zi(blit_surface=self._surface, SIZE=beer_zi_surface, POS=beer_zi_surface_pos, COLOR=beer_zi_color,
-                               zi_pace=beer_zi_pace, number_of_zi=beer_number_of_zi, monte_file_path=monte_file_path)
+                               zi_pace=1/(self._update_index_pace), number_of_zi=beer_number_of_zi, monte_file_path=monte_file_path)
 
         self._BeerFormula = BeerFormula( blit_surface= self._surface, SIZE= beer_formula_size, POS= beer_formula_pos,\
         COLOR= beer_formula_color )
@@ -152,13 +155,13 @@ class DepictBox:
         # self._BeerLine._blit_surface = self._surface
 
     # Function will call all renders, including self, BeerLine, Formula and Zi's
+    # Getting the list index and list bool and passing to all sub beer classes
 
-    def render(self):
-
+    def render( self, Poison ):
         self._render_self()
-        self._BeerZi.render()
+        self._BeerZi.render( Poisson= Poison)
         self._BeerFormula.render()
-        self._BeerLine.render()
+        self._BeerLine.render( Poison= Poison )
         
         # pygame.image.save( self._surfaces, "test.png" )
         self._blit_screen.blit(source=self._surface, dest=self._rect)

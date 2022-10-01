@@ -65,6 +65,9 @@ class BeerLine:
         # Initializing the list of indices
         cm._read_file( file_path = monte_file_path, file_mode = 'r' )
 
+        # Monte_carlo_list and index
+        self._list_bool = []
+        self._list_index = 0
     # rectangle and surface are created in this function
     def _create_surf( self ):
 
@@ -141,13 +144,16 @@ class BeerLine:
         x_coord = self._line_start_pos[0] + self._first_dot_position
         y_coord = self._line_start_pos[1]
         self._dot_positions= []
-        j = cm.list_index
+        j = self._list_index
+        print( self._list_bool[self._list_index])
         dot_center = ( x_coord, y_coord )
         for i in range( int(x_coord), int(self._line_end_pos[0] ), self._dot_gaps):
-            if( cm.list_bool[j] == 1 ):
+            if( self._list_bool[j] == 1 ):
+                
                 pygame.draw.circle( surface= self._surface, color= self._happy_dot_colors, center= dot_center,\
                     radius= self._happy_dot_size, width= 0 )
             else:
+                
                 pygame.draw.circle( surface= self._surface, color= self._sad_dot_colors, center= dot_center,\
                     radius= self._sad_dot_size, width= 0 )
             self._dot_positions.append(dot_center)
@@ -159,7 +165,7 @@ class BeerLine:
     # happy and sad popsickle will have different heights 
     def _render_popsickle( self ):
         # Depending on i the type of popsickle will be blitted
-        i = cm.list_index
+        i = self._list_index
 
         self._popsickle_end_positions = []
 
@@ -169,7 +175,7 @@ class BeerLine:
             # Adjusting coordinates with size of popsickle 
             coordinate = (coordinate[0], coordinate[1])
             
-            if( cm.list_bool[i] ) == 1:
+            if( self._list_bool[i] ) == 1:
                 end_coord = ( coordinate[0], coordinate[1] - self._happy_popsickle_length )
                 pygame.draw.line( surface= self._surface, color= self._happy_popsickle_color, start_pos= coordinate,\
                     end_pos= end_coord, width= self._popsickle_width )
@@ -184,10 +190,10 @@ class BeerLine:
     
     def _render_smiley( self ):
         # Depending on i happy or sad smiley will be blitted
-        i = cm.list_index
+        i = self._list_index
         for coordinate in self._popsickle_end_positions:
             
-            if( cm.list_bool[i] == 1 ):
+            if( self._list_bool[i] == 1 ):
                 # Adjusting coordinates to the center
                 coordinate = cm.adjust_to_center_draw( coordinates= coordinate, draw_size= self._happy_smiley_size )
                 self._surface.blit( source= self._happy_smiley, dest= coordinate )
@@ -200,7 +206,7 @@ class BeerLine:
 
     # Updating self._first_dot_position
     def _update_dot_position( self ):
-        if self._first_dot_position <= self._happy_dot_size:
+        if self._first_dot_position < self._happy_dot_size:
             self._first_dot_position = self._dot_gaps
             cm._update_index( number_of_dots= self._number_of_dots)
         else:
@@ -210,7 +216,12 @@ class BeerLine:
         self._update_dot_position()
 
 
-    def render( self ):
+    def render( self, Poison ):
+
+        # Getting the list_index and list_bool from Beer Depict
+        self._list_index = Poison.get_cur_index() - 100
+        self._list_bool = Poison.get_list()
+
         # Rendering all objects in the surface
         # The sequence of drawing is very important
         self._render_self()

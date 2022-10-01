@@ -39,6 +39,8 @@ class Beer_Zi:
         # Initializing the list of indices
         cm._read_file( file_path = monte_file_path, file_mode = 'r' )
 
+        self._list_index = 0
+        self._list_bool = [0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0]
 
     # Creating surface and rectangle for the class
     # Making surface completly transparent
@@ -58,7 +60,7 @@ class Beer_Zi:
         temp_size = None
         for i in range( self._number_of_zi + 1):
 
-            self._return_z( sub_i = cm.list_bool[i], file= self._zi_path, h_s= cm.list_bool[cm.list_index_zi] )
+            self._return_z( sub_i = self._list_bool[i], file= self._zi_path, h_s= self._list_bool[self._list_index] )
 
             temp_image = pygame.image.load( self._zi_path )
             temp_size = temp_image.get_size()
@@ -76,7 +78,7 @@ class Beer_Zi:
 
     def _shift_zi( self ):
         self._current_zi_array.pop(0)
-        self._return_z( sub_i = cm.list_index_zi, h_s= cm.list_bool[cm.list_index_zi] )
+        self._return_z( sub_i = self._list_index, h_s= self._list_bool[self._list_index] )
         temp_image = pygame.image.load( self._zi_path )
         temp_image = pygame.transform.scale( surface= temp_image, size= self._zi_size )
         temp_image.set_colorkey( self._zi_color )
@@ -137,7 +139,11 @@ class Beer_Zi:
         self._surface.fill( self._COLOR )
         
 
-    def render( self ):
+    def render( self, Poison):
+
+        self._list_index = Poison.get_cur_index() - 100 
+        self._list_bool = Poison.get_list()
+
         self._render_self()
         self._render_zi()
         self._blit_surface.blit( source = self._surface, dest= self._rect )
