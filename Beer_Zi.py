@@ -1,10 +1,11 @@
+
 from numpy import source
 import pygame
 import common_methods as cm
 import matplotlib.pyplot as plt
 
 class Beer_Zi:
-    
+
     # Blit surface is surface on which zi's will be built togethor 
     # The position of the Beerzi surface will by default be relative to the BeerDepict(blit_surface) surface
     # The size is relative to blit_surface
@@ -12,9 +13,9 @@ class Beer_Zi:
                 monte_file_path: str ):
 
         # Initializing all required variables and constants
-        
+
         self._blit_surface = blit_surface
-        
+
         # Surface and rectangle for the rect
         self._surface = None
         self._rect = None
@@ -34,7 +35,7 @@ class Beer_Zi:
         # zi_first_blit is where the first image of zi will be blit in each iteration on the screen
         self._zi_first_blit = None
         # Array storing the current imagetemp_image.set_colorkey( self._zi_color )s of zi's
-        
+
         self._current_zi_array = []
         # Initializing the list of indices
         cm._read_file( file_path = monte_file_path, file_mode = 'r' )
@@ -54,7 +55,7 @@ class Beer_Zi:
         self._rect = pygame.Rect( self._POS, self._SIZE)
 
     def _create_zi( self ):
-        
+
         self._zi_y_pos = (self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
         self._zi_first_blit = self._zi_y_pos
         temp_size = None
@@ -67,11 +68,16 @@ class Beer_Zi:
             temp_image.set_colorkey( self._zi_color )
             temp_image = pygame.transform.scale( surface= self._surface , size= ( temp_size[0], self._SIZE[1]/self._number_of_zi  )  )
             self._current_zi_array.append( temp_image )
-    
+
+            # this blits the first number_of_zi images onto their respective y positions
+            self._blit_surface.blit( temp_image, ( 0, self._zi_first_blit + i * self._SIZE[ 1 ] ) )
+
         self._zi_size = ( temp_size[0], self._SIZE[1]/self._number_of_zi )
 
+        print( self._zi_size )
+
         self._zi_pace = self._zi_size[1]*self._zi_pace
-    
+
     def create( self ):
         self._create_self()
         self._create_zi()
@@ -92,7 +98,7 @@ class Beer_Zi:
         else:
             self._zi_y_pos = int(self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
             self._shift_zi()
-    
+
     def _return_z( self, sub_i: str, file: str = 'zi.png', h_s: bool = False,  font_size: int = 15, pos: tuple = ( 0.25, 0.4 ), fig_size: tuple = ( 1, 1 ) ):
         """
         Saves the current figure in the IO buffer as png, not quite, changed so that saves image
