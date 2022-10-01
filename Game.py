@@ -6,7 +6,7 @@ from Poisson import Poison
 Poisson_t = 3
 Poisson_lambda = 5
 N = 10 ** 6
-beer_price = 200
+beer_price = 120
 
 # Depict box 
 depict_box_v_line_width = 5
@@ -142,7 +142,7 @@ class Game( object ):
                 self._handle_events()
                 self._update()
                 self._render()
-                pygame.time.delay(100)
+                pygame.time.delay(10)
         self._clean()
         print( 'Exited game instance!' )
 

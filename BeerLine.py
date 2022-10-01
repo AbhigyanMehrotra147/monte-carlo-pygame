@@ -13,7 +13,7 @@ class BeerLine:
         sad_dot_colors: float, sad_dot_size: float, happy_dot_colors: tuple, happy_dot_size: float, \
             numer_of_dots: tuple, dot_pace: float, happy_popsickle_color: tuple, sad_popsickle_color: tuple, popsickle_width: float, happy_popsickle_length: float, \
                 sad_smiley_pos: tuple, happy_smiley_pos: tuple, sad_smiley_size: tuple, happy_smiley_size: tuple, \
-                    sad_popsickle_length: float, smiley_address: tuple, monte_file_path: str ):
+                    sad_popsickle_length: float, smiley_address: tuple, monte_file_path: str, Poison ):
         
         self._blit_surface = blit_surface
         self._surface = None
@@ -66,8 +66,11 @@ class BeerLine:
         cm._read_file( file_path = monte_file_path, file_mode = 'r' )
 
         # Monte_carlo_list and index
-        self._list_bool = []
-        self._list_index = 0
+
+
+        # Poison 
+
+        self._Poison = Poison
     # rectangle and surface are created in this function
     def _create_surf( self ):
 
@@ -144,11 +147,11 @@ class BeerLine:
         x_coord = self._line_start_pos[0] + self._first_dot_position
         y_coord = self._line_start_pos[1]
         self._dot_positions= []
-        j = self._list_index
-        print( self._list_bool[self._list_index])
+        j = self._Poison.get_cur_index()
+        print( self._Poison.get_list()[self._Poison.get_cur_index()])
         dot_center = ( x_coord, y_coord )
         for i in range( int(x_coord), int(self._line_end_pos[0] ), self._dot_gaps):
-            if( self._list_bool[j] == 1 ):
+            if( self._Poison.get_list()[j] == 1 ):
                 
                 pygame.draw.circle( surface= self._surface, color= self._happy_dot_colors, center= dot_center,\
                     radius= self._happy_dot_size, width= 0 )
@@ -165,7 +168,7 @@ class BeerLine:
     # happy and sad popsickle will have different heights 
     def _render_popsickle( self ):
         # Depending on i the type of popsickle will be blitted
-        i = self._list_index
+        i = self._Poison.get_cur_index()
 
         self._popsickle_end_positions = []
 
@@ -175,7 +178,7 @@ class BeerLine:
             # Adjusting coordinates with size of popsickle 
             coordinate = (coordinate[0], coordinate[1])
             
-            if( self._list_bool[i] ) == 1:
+            if( self._Poison.get_list()[i] ) == 1:
                 end_coord = ( coordinate[0], coordinate[1] - self._happy_popsickle_length )
                 pygame.draw.line( surface= self._surface, color= self._happy_popsickle_color, start_pos= coordinate,\
                     end_pos= end_coord, width= self._popsickle_width )
@@ -190,10 +193,10 @@ class BeerLine:
     
     def _render_smiley( self ):
         # Depending on i happy or sad smiley will be blitted
-        i = self._list_index
+        i = self._Poison.get_cur_index()
         for coordinate in self._popsickle_end_positions:
             
-            if( self._list_bool[i] == 1 ):
+            if( self._Poison.get_list()[i] == 1 ):
                 # Adjusting coordinates to the center
                 coordinate = cm.adjust_to_center_draw( coordinates= coordinate, draw_size= self._happy_smiley_size )
                 self._surface.blit( source= self._happy_smiley, dest= coordinate )
@@ -206,9 +209,8 @@ class BeerLine:
 
     # Updating self._first_dot_position
     def _update_dot_position( self ):
-        if self._first_dot_position < self._happy_dot_size:
+        if self._first_dot_position < self._happy_dot_size + self._dot_pace:
             self._first_dot_position = self._dot_gaps
-            cm._update_index( number_of_dots= self._number_of_dots)
         else:
             self._first_dot_position -= self._dot_pace
 
@@ -216,11 +218,11 @@ class BeerLine:
         self._update_dot_position()
 
 
-    def render( self, Poison ):
+    def render( self ):
 
         # Getting the list_index and list_bool from Beer Depict
-        self._list_index = Poison.get_cur_index() - 100
-        self._list_bool = Poison.get_list()
+        # self._Poison.get_cur_index() = Poison.get_cur_index() - 100
+        # self._Poison.get_list() = Poison.get_list()
 
         # Rendering all objects in the surface
         # The sequence of drawing is very important

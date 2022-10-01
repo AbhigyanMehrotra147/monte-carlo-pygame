@@ -157,10 +157,10 @@ class DepictBox:
 
     def render( self, Poison ):
         self._render_self()
-        self._BeerZi.render( Poisson= Poison)
+        self._BeerZi.render( Poison= Poison)
         self._BeerFormula.render()
-        
-        self._BeerLine.render( Poison= Poison )
+
+        self._BeerLine.render()
         
         # pygame.image.save( self._surfaces, "test.png" )
         self._blit_screen.blit(source=self._surface, dest=self._rect)
