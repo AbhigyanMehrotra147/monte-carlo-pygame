@@ -6,12 +6,11 @@ from BeerLine import BeerLine
 from BeerFormula import BeerFormula
 import pygame
 
-
 line_surface_coords = (0.0, 0.7)
 line_surface_size = (0.8, 0.3)
 line_surface_color = None
 
-line_coords = [(0.1, 0.8), (1, 0.9)]
+line_coords = [( 0.125, 0.9 ), ( 1 - 0.125, 0.9 )]
 line_color = (20, 20, 20)
 line_width = 5
 
@@ -21,7 +20,7 @@ happy_dot_size = 5
 sad_dot_color = (220, 100, 100)
 sad_dot_size = 5
 
-number_of_dots = 5
+number_of_dots = 4
 dot_pace = 0.2
 
 # Popsickkle dimensions are relative to beerline surface and not Beerdepict surface
@@ -47,17 +46,16 @@ monte_file_path = "temp.txt"
 
 #  zi
 
-beer_zi_surface_pos = (0.1, 0)
-beer_zi_surface = (0.8, 0.8)
+beer_zi_surface_pos = (0.05, 0)
+beer_zi_surface = (0.9, 0.8)
 
-beer_zi_color = (125, 20, 78)
+beer_zi_color = ( 125, 20, 78 )
 
 beer_zi_pace = 0.2
-beer_number_of_zi = 5
+beer_number_of_zi = 4
 
 # BeerFormula
-
-beer_formula_surface_size = (0.8,0.8)
+beer_formula_surface_size = ( 0.8, 0.7 )
 beer_formula_surface_pos = (0.0,0)
 
 beer_formula_surface_color = (255,255,255)
@@ -65,8 +63,6 @@ beer_formula_surface_color = (255,255,255)
 # Relative size and position of formula to be blit on beer_formula_surface
 beer_formuala_size = ( 0.8, 0.8 )
 beer_formula_pos = (0,0)
-
-
 
 class DepictBox:
 
@@ -178,7 +174,7 @@ class DepictBox:
 
         self._BeerLine.render()
         self._BeerFormula.render()
-        self._BeerZi.render( Poison= self._Poison)
+        self._BeerZi.render( Poison= self._Poison )
 
         # pygame.image.save( self._surfaces, "test.png" )
         self._blit_screen.blit(source=self._surface, dest=self._rect)

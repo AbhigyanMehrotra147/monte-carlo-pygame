@@ -16,7 +16,7 @@ depict_box_v_line_color = (100,100,100)
 depict_box_h_line_width = 5
 depict_box_h_line_color = (100,100,100)
 
-depict_box_pos = (-0.0,0.1)
+depict_box_pos = (0.0,0.0)
 
 update_index_pace = 5
 
@@ -32,10 +32,9 @@ class Game( object ):
         self._BCK_COL = [ 255, 2, 0 ]
         self._NUM_IMAGES = 5
         self._SURFACES = []
-        self._FPS = 1100
-        
-        self._running_timer = 1
+        self._FPS = 10
 
+        self._running_timer = 1
 
         self._running = True
         self._window = None
@@ -95,7 +94,7 @@ class Game( object ):
 
         self._background.update()
         
-        if self._running_timer < update_index_pace:
+        if self._running_timer <= update_index_pace:
             self._running_timer += 1
         else:
             self._Poison.update()
