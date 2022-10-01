@@ -49,7 +49,7 @@ class Poison():
         if( to_index is None ):
             to_index = self._cur_index
 
-        print( 'accessing sliced copy of private variable: self._beer_list!, from index, ', from_index, 'to ', to_index )
+        # print( 'accessing sliced copy of private variable: self._beer_list!, from index, ', from_index, 'to ', to_index )
 
         # an effective way to make sure no changes to inner things
         return copy.deepcopy( self._beer_list[ from_index : to_index + 1 ] )

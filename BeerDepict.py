@@ -1,17 +1,17 @@
 
 
-from curses.ascii import SI
-from common_methods import get_relative_coords
+import common_methods as cm
 from Beer_Zi import Beer_Zi
 from BeerLine import BeerLine
 from BeerFormula import BeerFormula
 import pygame
 
-line_surface_coords = (0.1, 0.65)
+
+line_surface_coords = (0.0, 0.7)
 line_surface_size = (0.8, 0.3)
 line_surface_color = None
 
-line_coords = [(0.1, 0.9), (0.9, 0.9)]
+line_coords = [(0.1, 0.8), (1, 0.9)]
 line_color = (20, 20, 20)
 line_width = 5
 
@@ -21,7 +21,7 @@ happy_dot_size = 5
 sad_dot_color = (220, 100, 100)
 sad_dot_size = 5
 
-number_of_dots = 3
+number_of_dots = 5
 dot_pace = 0.2
 
 # Popsickkle dimensions are relative to beerline surface and not Beerdepict surface
@@ -45,20 +45,28 @@ smiley_address = "./assets/smiley/"
 
 monte_file_path = "temp.txt"
 
-beer_zi_surface_pos = (0, 0)
+#  zi
+
+beer_zi_surface_pos = (0.1, 0)
 beer_zi_surface = (0.8, 0.8)
 
 beer_zi_color = (125, 20, 78)
 
 beer_zi_pace = 0.2
-beer_number_of_zi = 3
+beer_number_of_zi = 5
 
 # BeerFormula
 
-beer_formula_size = (0.5,0.7)
-beer_formula_pos = (0.3,0.01)
+beer_formula_surface_size = (0.8,0.8)
+beer_formula_surface_pos = (0.0,0)
 
-beer_formula_color = (255,255,255)
+beer_formula_surface_color = (255,255,255)
+
+# Relative size and position of formula to be blit on beer_formula_surface
+beer_formuala_size = ( 0.8, 0.8 )
+beer_formula_pos = (0,0)
+
+
 
 class DepictBox:
 
@@ -100,7 +108,7 @@ class DepictBox:
     def create(self):
         # Creating the surface for the self
         self._create_self()
-
+        self._create_lines()
         # The surface is now created and hence can be passes to BeerLine
         self._BeerLine = BeerLine(blit_surface=self._surface, SIZE=line_surface_size, POS=line_surface_coords,
                                   COLOR=self._color, line_coords=line_coords, line_color=line_color, line_width=line_width,
@@ -109,13 +117,14 @@ class DepictBox:
                                   happy_popsickle_color=happy_popsickle_color, sad_popsickle_color=sad_popsickle_color, popsickle_width=popsickle_width, happy_popsickle_length=happy_popsickle_length,
                                   sad_popsickle_length=sad_popsicle_length, sad_smiley_pos=sad_smiley_pos, sad_smiley_size=sad_smiley_size,
                                   happy_smiley_pos=happy_smiley_pos, happy_smiley_size=happy_smiley_size, smiley_address=smiley_address,
-                                  monte_file_path=monte_file_path)
+                                  monte_file_path=monte_file_path, Poison= self._Poison)
 
         self._BeerZi = Beer_Zi(blit_surface=self._surface, SIZE=beer_zi_surface, POS=beer_zi_surface_pos, COLOR=beer_zi_color,
                                zi_pace=1/(self._update_index_pace), number_of_zi=beer_number_of_zi, monte_file_path=monte_file_path)
 
-        self._BeerFormula = BeerFormula( blit_surface= self._surface, SIZE= beer_formula_size, POS= beer_formula_pos,\
-        COLOR= beer_formula_color, Poison = self._Poison )
+        self._BeerFormula = BeerFormula( blit_surface= self._surface, SIZE= beer_formula_surface_size, POS= beer_formula_surface_pos,\
+        COLOR= beer_formula_surface_color, formula_size = beer_formuala_size, formula_pos = beer_formula_pos,\
+             Poison = self._Poison )
 
         self._BeerLine.create()
         self._BeerZi.create()
@@ -123,20 +132,27 @@ class DepictBox:
 
     def _create_self(self):
         # Setting color key so that the background gets removed gets removed.
+        
+        self._POS= cm.get_relative_coords( relative_surface = self._blit_screen, relative_coords = self._POS )
         self._surface = pygame.Surface(size=self._SIZE).convert_alpha()
         self._surface.set_colorkey(self._color)
         self._rect = pygame.Rect(self._POS, self._SIZE)
 
-        # Getting position of lines to be drawn
-        self._h_line_start = get_relative_coords(
-            relative_surface=self._surface, relative_coords=self._h_line_start)
-        self._h_line_end = get_relative_coords(
-            relative_surface=self._surface, relative_coords=self._h_line_end)
-        self._v_line_start = get_relative_coords(
-            relative_surface=self._surface, relative_coords=self._v_line_start)
-        self._v_line_end = get_relative_coords(
-            relative_surface=self._surface, relative_coords=self._v_line_end)
+        
 
+
+
+    def _create_lines( self ):
+                # Getting position of lines to be drawn
+        self._h_line_start = cm.get_relative_coords(
+            relative_surface=self._surface, relative_coords=self._h_line_start)
+        self._h_line_end = cm.get_relative_coords(
+            relative_surface=self._surface, relative_coords=self._h_line_end)
+        self._v_line_start = cm.get_relative_coords(
+            relative_surface=self._surface, relative_coords=self._v_line_start)
+        self._v_line_end = cm.get_relative_coords(
+            relative_surface=self._surface, relative_coords=self._v_line_end)
+    
     def _update(self):
         self._RollingWindow.update()
 
@@ -161,9 +177,8 @@ class DepictBox:
         self._render_self()
 
         self._BeerLine.render()
-
-        self._BeerZi.render( Poison= self._Poison)
         self._BeerFormula.render()
-        
+        self._BeerZi.render( Poison= self._Poison)
+
         # pygame.image.save( self._surfaces, "test.png" )
         self._blit_screen.blit(source=self._surface, dest=self._rect)

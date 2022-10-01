@@ -73,4 +73,4 @@ def make_mono( file: str = 'zi.png', thresh = 230, reverse: bool = False ):
     filter = lambda x : 255 * int( not( reverse  ) ) if x > thresh else 0
     image_file = image_file.convert( 'L' ).point( filter, mode='1' )
     image_file.save( file )
-    print( 'Saved the converted image' )
+    # print( 'Saved the converted image' )

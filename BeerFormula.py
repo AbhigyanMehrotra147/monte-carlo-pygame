@@ -6,7 +6,8 @@ import matplotlib.pyplot as plt
 
 class BeerFormula:
 
-    def __init__( self, blit_surface: pygame.Surface, SIZE: tuple, POS: tuple, COLOR: tuple, Poison ):
+    def __init__( self, blit_surface: pygame.Surface, SIZE: tuple, POS: tuple, COLOR: tuple,\
+        formula_size: tuple, formula_pos: tuple, Poison ):
 
         # Surface to be blitted on
         self._blit_surface = blit_surface
@@ -23,7 +24,14 @@ class BeerFormula:
         self._SIZE = SIZE
         self._COLOR = COLOR
 
+        # Attributes of Formula
+        self._formula_size = formula_size
+        self._formula_pos = formula_pos
+
+        # Poison object in sync with Beerline and Beer zi
         self._Poison = Poison
+
+        self._curr_index = 0
 
     def _create_self( self ):
 
@@ -55,19 +63,27 @@ class BeerFormula:
         if( convolve ):
             cm.make_mono( file= self._file )
 
+
+    def _create_formula( self ):
+        self._formula_pos = cm.get_relative_coords( relative_surface = self._surface, relative_coords= self._formula_pos )
+        self._formula_size = cm.get_relative_size( relative_surface = self._surface, relative_size = self._formula_size )
+
     def create( self ):
         self._create_self()
+        self._create_formula()
 
     def _update( self ):
         # update the formula.png with new N and new average
-        self._return_formula( N= str( self._Poison.get_cur_index() - 100 ), index='i', avg = str( self._Poison.get_mean( from_index = 0, to_index = self._Poison.get_cur_index() - 100 ) )[0:5] )
+        self._curr_index =  self._Poison.get_cur_index() - 100
+        self._return_formula( N= str( self._curr_index), index='i', avg = str( self._Poison.get_mean( from_index = 0, to_index = self._curr_index) )[0:5] )
 
     def _render_self( self ):
         self._surface.fill( self._COLOR )
         formula = pygame.image.load( self._file )
         formula.set_colorkey( ( 255, 255, 255 ) )
 
-        self._surface.blit( formula, ( 0, 0 ) )
+        formula = pygame.transform.scale( surface = formula, size = self._formula_size )
+        self._surface.blit( source = formula, dest= self._formula_pos )
         self._blit_surface.blit( source = self._surface, dest= self._POS )
 
     def render( self ):

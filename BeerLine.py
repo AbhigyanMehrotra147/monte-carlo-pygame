@@ -69,7 +69,6 @@ class BeerLine:
 
 
         # Poison 
-
         self._Poison = Poison
     # rectangle and surface are created in this function
     def _create_surf( self ):
@@ -112,13 +111,13 @@ class BeerLine:
         
         # Scaling and storing sad smiley
         # Getting the actual relative size for happy smiley from the fractional sizes
-        self._sad_smiley = pygame.image.load( self._smiley_address + "sad_smiley.png" )
+        self._sad_smiley = pygame.image.load( self._smiley_address + "sad_smile.png" )
         self._sad_smiley_size = cm.preserved_relative_scaling( relative_surface = self._surface, relative_scale= 0.003, sub_surface= self._sad_smiley )
         self._sad_smiley = pygame.transform.scale( surface = self._sad_smiley, size = self._sad_smiley_size )
         
         # Scaling and storing happy smiley
         # Getting actual relative size for sad smiley from the fractional sizes
-        self._happy_smiley = pygame.image.load( self._smiley_address + "happy_smiley.png" )
+        self._happy_smiley = pygame.image.load( self._smiley_address + "happy_smile.png" )
         self._happy_smiley_size = cm.preserved_relative_scaling( relative_surface = self._surface, relative_scale= 0.003, sub_surface= self._happy_smiley )
         self._happy_smiley = pygame.transform.scale( surface = self._happy_smiley, size = self._happy_smiley_size)
 
@@ -147,8 +146,8 @@ class BeerLine:
         x_coord = self._line_start_pos[0] + self._first_dot_position
         y_coord = self._line_start_pos[1]
         self._dot_positions= []
-        j = self._Poison.get_cur_index()
-        print( self._Poison.get_list()[self._Poison.get_cur_index()])
+        j = self._Poison.get_cur_index() -100
+        print( self._Poison.get_list()[self._Poison.get_cur_index() -100])
         dot_center = ( x_coord, y_coord )
         for i in range( int(x_coord), int(self._line_end_pos[0] ), self._dot_gaps):
             if( self._Poison.get_list()[j] == 1 ):
@@ -168,7 +167,7 @@ class BeerLine:
     # happy and sad popsickle will have different heights 
     def _render_popsickle( self ):
         # Depending on i the type of popsickle will be blitted
-        i = self._Poison.get_cur_index()
+        i = self._Poison.get_cur_index() -100
 
         self._popsickle_end_positions = []
 
@@ -193,7 +192,7 @@ class BeerLine:
     
     def _render_smiley( self ):
         # Depending on i happy or sad smiley will be blitted
-        i = self._Poison.get_cur_index()
+        i = self._Poison.get_cur_index() -100
         for coordinate in self._popsickle_end_positions:
             
             if( self._Poison.get_list()[i] == 1 ):
@@ -221,7 +220,7 @@ class BeerLine:
     def render( self ):
 
         # Getting the list_index and list_bool from Beer Depict
-        # self._Poison.get_cur_index() = Poison.get_cur_index() - 100
+        # self._Poison.get_cur_index() -100 = Poison.get_cur_index() - 100
         # self._Poison.get_list() = Poison.get_list()
 
         # Rendering all objects in the surface

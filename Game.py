@@ -6,7 +6,7 @@ from Poisson import Poison
 Poisson_t = 3
 Poisson_lambda = 5
 N = 10 ** 6
-beer_price = 120
+beer_price = 180
 
 # Depict box 
 depict_box_v_line_width = 5
@@ -14,8 +14,11 @@ depict_box_v_line_coords = [(0.5,0),(0.5,0.5)]
 depict_box_v_line_color = (100,100,100)
 
 depict_box_h_line_width = 5
+depict_box_h_line_color = (100,100,100)
 
-update_index_pace = 10
+depict_box_pos = (-0.0,0.1)
+
+update_index_pace = 5
 
 class Game( object ):
 
@@ -29,9 +32,9 @@ class Game( object ):
         self._BCK_COL = [ 255, 2, 0 ]
         self._NUM_IMAGES = 5
         self._SURFACES = []
-        self._FPS = 15
+        self._FPS = 1100
         
-        self._running_timer = 0
+        self._running_timer = 1
 
 
         self._running = True
@@ -76,8 +79,8 @@ class Game( object ):
             # self._ash = Person( cur_x = self._WIDTH/(3/2), cur_y= self._HEIGHT/(3/2) , image_path = "./boy.png",  json_path= "./boy.json", NUM_FRAMES=5, sprite_index=0, x_name="x", y_name = "y", width_name = "width", height_name = "height" )
 
             self._Poison = Poison( t = Poisson_t, Lambda= Poisson_lambda, N=N, beer_price= beer_price  )
-            self._DepictBox = DepictBox( SIZE = (self._WIDTH*0.4,self._HEIGHT*0.3) ,POS = (self._WIDTH*0.01,self._HEIGHT*0.01),BORDER_RADIUS= 10, color=(100,100,100), blit_screen=self._screen, \
-                 h_line_color= (100,100,100), h_line_coords=[(0,0.5),(1,0.5)], h_line_width= depict_box_h_line_width,\
+            self._DepictBox = DepictBox( SIZE = (self._WIDTH*0.45,self._HEIGHT*0.28) ,POS = depict_box_pos,BORDER_RADIUS= 10, color=(100,100,100), blit_screen=self._screen, \
+                 h_line_color= depict_box_h_line_color, h_line_coords=[(0,0.5),(1,0.5)], h_line_width= depict_box_h_line_width,\
                      v_line_color= depict_box_v_line_color, v_line_coords= depict_box_v_line_coords, v_line_width= depict_box_v_line_width, update_index_pace = update_index_pace, Poison = self._Poison )
             
             for i in range(100):
@@ -96,7 +99,7 @@ class Game( object ):
             self._running_timer += 1
         else:
             self._Poison.update()
-            self._running_timer = 0
+            self._running_timer = 1
         # self._ash.move( screen = self._window, dx= -float( 10 * self._delta_T ), dy= -1)
 
     def _render( self ):
@@ -140,10 +143,11 @@ class Game( object ):
                 self._prev_time = cur_time
 
                 self._handle_events()
-                self._update()
                 self._render()
+                self._update()
+                
 
-                pygame.time.delay(1)
+                pygame.time.delay(0)
         self._clean()
         print( 'Exited game instance!' )
 
