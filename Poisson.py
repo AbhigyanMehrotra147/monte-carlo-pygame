@@ -60,8 +60,10 @@ class Poison():
         """
         return copy.deepcopy( self._cur_index )
 
-    def get_mean_array( self ):
-        return self._beer_list.mean()
+    def get_mean( self, from_index: int = 0, to_index: int = None ):
+        if( to_index is None ):
+            to_index = self.get_cur_index()
+        return ( self._beer_list[ from_index : to_index ] ).mean()
 
 def main():
     """
@@ -81,7 +83,7 @@ def main():
         pois.update()
         # print( pois.get_list() )
 
-        print( pois.get_mean_array() )
+        print( pois.get_mean() )
 
 if __name__ == "__main__":
     main()

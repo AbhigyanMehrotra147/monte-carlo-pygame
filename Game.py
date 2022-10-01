@@ -75,11 +75,11 @@ class Game( object ):
 
             # self._ash = Person( cur_x = self._WIDTH/(3/2), cur_y= self._HEIGHT/(3/2) , image_path = "./boy.png",  json_path= "./boy.json", NUM_FRAMES=5, sprite_index=0, x_name="x", y_name = "y", width_name = "width", height_name = "height" )
 
+            self._Poison = Poison( t = Poisson_t, Lambda= Poisson_lambda, N=N, beer_price= beer_price  )
             self._DepictBox = DepictBox( SIZE = (self._WIDTH*0.4,self._HEIGHT*0.3) ,POS = (self._WIDTH*0.01,self._HEIGHT*0.01),BORDER_RADIUS= 10, color=(100,100,100), blit_screen=self._screen, \
                  h_line_color= (100,100,100), h_line_coords=[(0,0.5),(1,0.5)], h_line_width= depict_box_h_line_width,\
-                     v_line_color= depict_box_v_line_color, v_line_coords= depict_box_v_line_coords, v_line_width= depict_box_v_line_width, update_index_pace = update_index_pace )
+                     v_line_color= depict_box_v_line_color, v_line_coords= depict_box_v_line_coords, v_line_width= depict_box_v_line_width, update_index_pace = update_index_pace, Poison = self._Poison )
             
-            self._Poison = Poison( t = Poisson_t, Lambda= Poisson_lambda, N=N, beer_price= beer_price  )
             for i in range(100):
                 self._Poison.update()    
 
@@ -106,7 +106,7 @@ class Game( object ):
         # self._background.render_hue( self._screen )
         # self._LawLarge.render( screen = self._screen )
 
-        self._DepictBox.render( Poison= self._Poison )
+        self._DepictBox.render()
 
         # fps_text = pygame.font.SysFont( "impact", 50 ).render( str(cur_fps), 1, (0,0,0))
         # self._window.blit( fps_text, ( self._WIDTH / 2, 100) )
@@ -142,7 +142,8 @@ class Game( object ):
                 self._handle_events()
                 self._update()
                 self._render()
-                pygame.time.delay(10)
+
+                pygame.time.delay(1)
         self._clean()
         print( 'Exited game instance!' )
 

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 class BeerFormula:
 
-    def __init__( self, blit_surface: pygame.Surface, SIZE: tuple, POS: tuple, COLOR: tuple ):
+    def __init__( self, blit_surface: pygame.Surface, SIZE: tuple, POS: tuple, COLOR: tuple, Poison ):
 
         # Surface to be blitted on
         self._blit_surface = blit_surface
@@ -22,6 +22,8 @@ class BeerFormula:
         self._POS = POS
         self._SIZE = SIZE
         self._COLOR = COLOR
+
+        self._Poison = Poison
 
     def _create_self( self ):
 
@@ -58,7 +60,7 @@ class BeerFormula:
 
     def _update( self ):
         # update the formula.png with new N and new average
-        self._return_formula()
+        self._return_formula( N= str( self._Poison.get_cur_index() - 100 ), index='i', avg = str( self._Poison.get_mean( from_index = 0, to_index = self._Poison.get_cur_index() - 100 ) )[0:5] )
 
     def _render_self( self ):
         self._surface.fill( self._COLOR )
