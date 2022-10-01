@@ -67,7 +67,9 @@ class DepictBox:
     # Line coordinates are always relative to the surface
     def __init__(self, SIZE: tuple, POS: tuple, BORDER_RADIUS: float, color: tuple, blit_screen: pygame.Surface,\
          h_line_color: tuple, h_line_coords: list, v_line_color: tuple, v_line_coords: list, h_line_width: float, v_line_width: float, \
-            update_index_pace: int):
+                 update_index_pace: int, Poison ):
+
+        self._Poison = Poison
 
         self._SIZE = SIZE
         self._POS = POS
@@ -113,7 +115,7 @@ class DepictBox:
                                zi_pace=1/(self._update_index_pace), number_of_zi=beer_number_of_zi, monte_file_path=monte_file_path)
 
         self._BeerFormula = BeerFormula( blit_surface= self._surface, SIZE= beer_formula_size, POS= beer_formula_pos,\
-        COLOR= beer_formula_color )
+        COLOR= beer_formula_color, Poison = self._Poison )
 
         self._BeerLine.create()
         self._BeerZi.create()
@@ -155,12 +157,12 @@ class DepictBox:
     # Function will call all renders, including self, BeerLine, Formula and Zi's
     # Getting the list index and list bool and passing to all sub beer classes
 
-    def render( self, Poison ):
+    def render( self ):
         self._render_self()
-        self._BeerZi.render( Poison= Poison)
+        self._BeerZi.render( Poison= self._Poison)
         self._BeerFormula.render()
         
-        self._BeerLine.render( Poison= Poison )
+        self._BeerLine.render( Poison= self._Poison )
         
         # pygame.image.save( self._surfaces, "test.png" )
         self._blit_screen.blit(source=self._surface, dest=self._rect)
