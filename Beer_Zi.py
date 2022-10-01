@@ -4,7 +4,7 @@ import common_methods as cm
 import matplotlib.pyplot as plt
 
 class Beer_Zi:
-    
+
     # Blit surface is surface on which zi's will be built togethor 
     # The position of the Beerzi surface will by default be relative to the BeerDepict(blit_surface) surface
     # The size is relative to blit_surface
@@ -12,9 +12,9 @@ class Beer_Zi:
                 monte_file_path: str ):
 
         # Initializing all required variables and constants
-        
+
         self._blit_surface = blit_surface
-        
+
         # Surface and rectangle for the rect
         self._surface = None
         self._rect = None
@@ -94,7 +94,7 @@ class Beer_Zi:
             self._zi_y_pos = int(self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
             self._shift_zi()
     
-    def _return_z( self, sub_i: str, file: str = 'zi.png', h_s: bool = False,  font_size: int = 15, pos: tuple = ( 0.25, 0.4 ), fig_size: tuple = ( 1, 1 ) ):
+    def _return_z( self, sub_i: str, file: str = 'zi.png', h_s: bool = False,  font_size: int = 25, pos: tuple = ( 0, 0.4 ), fig_size: tuple = ( 2, 1 ) ):
         """
         Saves the current figure in the IO buffer as png, not quite, changed so that saves image
         """
@@ -128,7 +128,7 @@ class Beer_Zi:
         return None
 
     def _render_zi( self ):
-        i = self._number_of_zi - 1
+        i = self._number_of_zi
         for y_coord in range( int( self._zi_y_pos ), int( -self._zi_size[1] ) , int( -self._zi_size[1] ) ):
             self._surface.blit( source= self._current_zi_array[i], dest= (0,y_coord) )
             i -= 1
