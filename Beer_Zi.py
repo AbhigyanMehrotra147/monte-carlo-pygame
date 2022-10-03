@@ -94,11 +94,9 @@ class Beer_Zi:
             self._zi_y_pos = int(self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
             self._shift_zi()
     
-<<<<<<< HEAD
-    def _return_z( self, sub_i: str, file: str = 'zi.png', h_s: bool = False,  font_size: int = 30, pos: tuple = ( 0, 0.4 ), fig_size: tuple = ( 2, 1 ) ):
-=======
+
     def _return_z( self, sub_i: str, file: str = 'zi.png', h_s: bool = False,  font_size: int = 25, pos: tuple = ( 0, 0.4 ), fig_size: tuple = ( 2, 1 ) ):
->>>>>>> 7118cfd928b342719fbb523de10c64051d5178f4
+
         """
         Saves the current figure in the IO buffer as png, not quite, changed so that saves image
         """
