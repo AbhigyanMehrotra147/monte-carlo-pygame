@@ -6,22 +6,26 @@ from BeerLine import BeerLine
 from BeerFormula import BeerFormula
 import pygame
 
-line_surface_coords = (0.0, 0.7)
-line_surface_size = (0.8, 0.3)
+
+line_surface_coords = ( 0.0, 0.7 )
+line_surface_size = ( 0.8, 0.3 )
 line_surface_color = None
 
-line_coords = [( 0.125, 0.9 ), ( 1 - 0.125, 0.9 )]
-line_color = (20, 20, 20)
+line_coords = [ ( 0.125, 0.9 ), ( 1 - 0.125, 0.9 ) ]
+line_color = ( 20, 20, 20 )
+
 line_width = 5
 
-happy_dot_color = (100, 220, 100)
+happy_dot_color = ( 100, 220, 100 )
 happy_dot_size = 5
 
 sad_dot_color = (220, 100, 100)
 sad_dot_size = 5
 
 number_of_dots = 4
-dot_pace = 0.2
+
+dot_pace = 1/number_of_dots
+
 
 # Popsickkle dimensions are relative to beerline surface and not Beerdepict surface
 happy_popsickle_color = happy_dot_color
@@ -46,13 +50,17 @@ monte_file_path = "temp.txt"
 
 #  zi
 
-beer_zi_surface_pos = (0.05, 0)
-beer_zi_surface = (0.9, 0.8)
+beer_zi_surface_pos = (0.1, 0)
+beer_zi_surface = ( 0.7, 1.05 )
+
 
 beer_zi_color = ( 125, 20, 78 )
 
-beer_zi_pace = 0.2
+
 beer_number_of_zi = 4
+
+beer_zi_pace = 1/beer_number_of_zi
+
 
 # BeerFormula
 beer_formula_surface_size = ( 0.8, 0.7 )

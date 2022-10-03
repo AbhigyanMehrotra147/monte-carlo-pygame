@@ -3,7 +3,6 @@ from imp import source_from_cache
 import pygame
 import common_methods as cm
 
-
 # Beerline surface will be blitted on BeerDepict surface
 # The position of the beerline surface will by default be relative to the BeerDepict surface
 class BeerLine:
@@ -14,11 +13,11 @@ class BeerLine:
             numer_of_dots: tuple, dot_pace: float, happy_popsickle_color: tuple, sad_popsickle_color: tuple, popsickle_width: float, happy_popsickle_length: float, \
                 sad_smiley_pos: tuple, happy_smiley_pos: tuple, sad_smiley_size: tuple, happy_smiley_size: tuple, \
                     sad_popsickle_length: float, smiley_address: tuple, monte_file_path: str, Poison ):
-        
+
         self._blit_surface = blit_surface
         self._surface = None
         self._rect = None
-        
+
         # Attributes for the surface 
         self._POS = POS
         self._SIZE = SIZE
@@ -67,9 +66,9 @@ class BeerLine:
 
         # Monte_carlo_list and index
 
-
         # Poison 
         self._Poison = Poison
+
     # rectangle and surface are created in this function
     def _create_surf( self ):
 

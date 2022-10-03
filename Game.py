@@ -1,3 +1,4 @@
+
 import pygame
 from time import time
 import math
@@ -16,7 +17,11 @@ depict_box_v_line_color = (100,100,100)
 depict_box_h_line_width = 5
 depict_box_h_line_color = (100,100,100)
 
+<<<<<<< HEAD
 depict_box_pos = (0.0,0.0)
+=======
+depict_box_pos = ( 0.0, 0.0 )
+>>>>>>> 7118cfd928b342719fbb523de10c64051d5178f4
 
 update_index_pace = 5
 
