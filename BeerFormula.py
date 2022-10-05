@@ -42,7 +42,7 @@ class BeerFormula:
         self._surface.set_colorkey( self._COLOR  )
         self._rect = pygame.Rect( self._POS, self._SIZE )
 
-    def _return_formula( self, N: str = '10^6', index: str = 'i', avg: str = '0.7231', fig_size=( 3, 1 ), font_size: int = 15, pos= ( 0.4, 0.2 ), convolve: bool = True ):
+    def _return_formula( self, N: str = '10^6', index: str = 'i', avg: str = '0.7231', fig_size=( 12, 4 ), font_size: int = 60, pos= ( 0, 0.5 ), convolve: bool = True ):
         # Latex
         cur_tex = r"$\frac{1}{" + N + r"} * " + r"\sum_{" + index + r"=0}^{" + N + r"} Z_i = " + avg + r"$"
 
@@ -75,7 +75,7 @@ class BeerFormula:
     def _update( self ):
         # update the formula.png with new N and new average
         self._curr_index =  self._Poison.get_cur_index() - 100
-        self._return_formula( N= str( self._curr_index), index='i', avg = str( self._Poison.get_mean( from_index = 0, to_index = self._curr_index) )[0:5] )
+        self._return_formula( N= str( self._curr_index ), index='i', avg = str( self._Poison.get_mean( from_index = 0, to_index = self._curr_index ) )[0:5] )
 
     def _render_self( self ):
         self._surface.fill( self._COLOR )

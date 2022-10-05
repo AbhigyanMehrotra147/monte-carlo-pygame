@@ -1,3 +1,4 @@
+
 from numpy import source
 import pygame
 import common_methods as cm
@@ -71,8 +72,8 @@ class Beer_Zi:
 
         self._zi_size = ( temp_size[0], self._SIZE[1]/self._number_of_zi )
 
-        self._zi_pace = self._zi_size[1]*self._zi_pace
-
+        self._zi_pace = self._zi_size[1]*self._zi_pace + 2
+    
     def create( self ):
         self._create_self()
         self._create_zi()
@@ -81,21 +82,23 @@ class Beer_Zi:
         self._current_zi_array.pop(0)
         self._return_z( sub_i = self._list_index, h_s= self._list_bool[self._list_index] )
         temp_image = pygame.image.load( self._zi_path )
-        temp_image = pygame.transform.scale( surface= temp_image, size= self._zi_size )
+        temp_image = pygame.transform.scale( surface= temp_image, size= ( self._zi_size[ 0 ], temp_image.get_size()[ 1 ] ) )
         temp_image.set_colorkey( self._zi_color )
         self._current_zi_array.append( temp_image )
         cm._update_index_zi( number_of_zi= self._number_of_zi)
 
     def _update_zi( self ):
 
-        if self._zi_y_pos > self._zi_first_blit - self._zi_size[1] :
+        if self._zi_y_pos > self._zi_first_blit + self._zi_pace - self._zi_size[1] :
             self._zi_y_pos -= self._zi_pace
         else:
             self._zi_y_pos = int(self._SIZE[1]*((self._number_of_zi - 1)/self._number_of_zi))
             self._shift_zi()
     
 
-    def _return_z( self, sub_i: str, file: str = 'zi.png', h_s: bool = False,  font_size: int = 25, pos: tuple = ( 0, 0.4 ), fig_size: tuple = ( 2, 1 ) ):
+
+    def _return_z( self, sub_i: str, file: str = 'zi.png', h_s: bool = False,  font_size: int = 30, pos: tuple = ( 0, 0.4 ), fig_size: tuple = ( 2, 2 ) ):
+
 
         """
         Saves the current figure in the IO buffer as png, not quite, changed so that saves image
@@ -117,10 +120,11 @@ class Beer_Zi:
 
         # to show the file  
         # plt.show()
+        
 
         # /Users/pogovishal/Documents/tmp/RollingWindow.py:32: RuntimeWarning: More than 20 figures have been opened. 
         # Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory.
-
+        
         plt.close( 'all' )
 
         # Performing convolution
@@ -133,15 +137,17 @@ class Beer_Zi:
         for y_coord in range( int( self._zi_y_pos ), int( -self._zi_size[1] ) , int( -self._zi_size[1] ) ):
             self._surface.blit( source= self._current_zi_array[i], dest= (0,y_coord) )
             i -= 1
-
+        
+        
         self._update_zi()
 
     def _render_self( self ):
         self._surface.fill( self._COLOR )
+        
 
     def render( self, Poison):
 
-        self._list_index = Poison.get_cur_index() - 100
+        self._list_index = Poison.get_cur_index() - 95
         self._list_bool = Poison.get_list()
 
         self._render_self()

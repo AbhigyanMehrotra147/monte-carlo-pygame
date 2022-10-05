@@ -1,35 +1,34 @@
 
-
 import common_methods as cm
 from Beer_Zi import Beer_Zi
 from BeerLine import BeerLine
 from BeerFormula import BeerFormula
 import pygame
 
-
 line_surface_coords = ( 0.0, 0.7 )
 line_surface_size = ( 0.8, 0.3 )
 line_surface_color = None
 
-line_coords = [ ( 0.125, 0.9 ), ( 1 - 0.125, 0.9 ) ]
-line_color = ( 20, 20, 20 )
 
+line_coords = [ ( 0.125, 0.9 ), ( 1 - 0.125, 0.9 ) ]
+
+
+line_color = ( 20, 20, 20 )
 line_width = 5
 
 happy_dot_color = ( 100, 220, 100 )
 happy_dot_size = 5
 
+
 sad_dot_color = (220, 100, 100)
 sad_dot_size = 5
 
 number_of_dots = 4
-
 dot_pace = 1/number_of_dots
-
 
 # Popsickkle dimensions are relative to beerline surface and not Beerdepict surface
 happy_popsickle_color = happy_dot_color
-happy_popsickle_length = 0.6
+happy_popsickle_length = 0.45
 
 sad_popsickle_color = sad_dot_color
 sad_popsicle_length = 0.35
@@ -49,28 +48,27 @@ smiley_address = "./assets/smiley/"
 monte_file_path = "temp.txt"
 
 #  zi
-
 beer_zi_surface_pos = (0.1, 0)
 beer_zi_surface = ( 0.7, 1.05 )
 
-
-beer_zi_color = ( 125, 20, 78 )
-
+beer_zi_color = (125, 20, 78)
 
 beer_number_of_zi = 4
 
 beer_zi_pace = 1/beer_number_of_zi
 
-
 # BeerFormula
-beer_formula_surface_size = ( 0.8, 0.7 )
-beer_formula_surface_pos = (0.0,0)
+
+beer_formula_surface_size = (0.8,0.7)
+beer_formula_surface_pos = (0.45,0.2)
 
 beer_formula_surface_color = (255,255,255)
 
 # Relative size and position of formula to be blit on beer_formula_surface
 beer_formuala_size = ( 0.8, 0.8 )
 beer_formula_pos = (0,0)
+
+
 
 class DepictBox:
 
@@ -108,6 +106,9 @@ class DepictBox:
 
         # Pace at which N(index for monte array) will change
         self._update_index_pace = update_index_pace
+
+        # number of frames that have been rendered, for saving the image with that name
+        self._frame_count = 0
 
     def create(self):
         # Creating the surface for the self
@@ -156,7 +157,7 @@ class DepictBox:
             relative_surface=self._surface, relative_coords=self._v_line_start)
         self._v_line_end = cm.get_relative_coords(
             relative_surface=self._surface, relative_coords=self._v_line_end)
-    
+
     def _update(self):
         self._RollingWindow.update()
 
@@ -182,7 +183,10 @@ class DepictBox:
 
         self._BeerLine.render()
         self._BeerFormula.render()
-        self._BeerZi.render( Poison= self._Poison )
+        self._BeerZi.render( Poison= self._Poison)
 
-        # pygame.image.save( self._surfaces, "test.png" )
+        self._surface.convert_alpha()
+        pygame.image.save( self._surface.convert_alpha(), f"./assets/menu_frames/{ self._frame_count }.png" )
+        self._frame_count += 1
         self._blit_screen.blit(source=self._surface, dest=self._rect)
+
